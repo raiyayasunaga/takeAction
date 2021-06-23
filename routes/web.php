@@ -11,7 +11,17 @@
 |
 */
 
+Route::prefix('admin')->group(function () {
+    Route::get('mypage', 'ActionController@mypage');
+    
+});
+
+Route::resource('admin', 'ActionController');
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

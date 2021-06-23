@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Action;
 use Illuminate\Http\Request;
 
-class AdminActionController extends Controller
+class ActionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,11 @@ class AdminActionController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.home');
+    }
+
+    public function mypage() {
+        return view('admin.mypage');
     }
 
     /**
@@ -24,7 +28,7 @@ class AdminActionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create');
     }
 
     /**
