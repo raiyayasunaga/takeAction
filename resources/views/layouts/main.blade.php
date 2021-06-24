@@ -28,15 +28,15 @@
         <div id="app">
           <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
               <div class="container">
-                  <a class="navbar-brand" href="{{ url('/') }}">
-                      {{ config('app.name', 'Laravel') }}
+                  <a class="navbar-brand" href="{{ url('admin') }}">
+                      <img src="/img/chihiro042.jpg" width="50px;">
                   </a>
                     <ul class="navbar-nav ml-auto">
                             <nav class="navMenu">
                                 <ul>
-                                    <li><a href="admin/mypage">マイページ</a></li>
-                                    <li><a href="admin/create">ムチを作成</a></li>
-                                    <li><a href="admin/mypage">ご褒美一覧</a></li>
+                                    <li><a href="mypage">マイページ</a></li>
+                                    <li><a href="create">ムチを作成</a></li>
+                                    <li><a href="reward">ご褒美一覧</a></li>
                                 </ul>
                             </nav>
 
@@ -83,9 +83,9 @@
 
                       <!-- Right Side Of Navbar -->
                       <ul class="navbar-nav ml-auto">
-                        <li><a href="admin/mypage">マイページ</a></li>
-                        <li><a href="admin/create">ムチを作成</a></li>
-                        <li><a href="admin/mypage">ご褒美一覧</a></li>
+                        <li><a href="mypage">マイページ</a></li>
+                        <li><a href="create">ムチを作成</a></li>
+                        <li><a href="reward">ご褒美一覧</a></li>
                     </ul>
                           @endguest
                   </div>

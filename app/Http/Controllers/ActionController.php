@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Action;
 use Illuminate\Http\Request;
+use App\User;
+use App\Post;
 
 class ActionController extends Controller
 {
@@ -17,8 +19,14 @@ class ActionController extends Controller
         return view('admin.home');
     }
 
-    public function mypage() {
+    public function mypage() 
+    {
         return view('admin.mypage');
+    }
+
+    public function reward() 
+    {
+        return view('admin.reward');
     }
 
     /**
@@ -29,6 +37,13 @@ class ActionController extends Controller
     public function create()
     {
         return view('admin.create');
+    }
+
+    public function new(Request $request) 
+    {
+        $post = $request->all();
+
+        redirect('admin');
     }
 
     /**

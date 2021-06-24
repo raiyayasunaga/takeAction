@@ -13,10 +13,11 @@
 
 Route::prefix('admin')->group(function () {
     Route::get('mypage', 'ActionController@mypage');
-    
+    Route::get('reward', 'ActionController@reward');
+    Route::post('new', 'ActionController@new');
 });
 
-Route::resource('admin', 'ActionController');
+Route::resource('admin', 'ActionController')->middleware('auth');
 
 Route::get('/', function () {
     return view('welcome');

@@ -6,8 +6,10 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <h2>myページについて</h2>
+        <img src="" id="img">
       </div>
+    </div>
+    <div class="row"> 
     </div>
   </div>
 @endsection
