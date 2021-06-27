@@ -25,6 +25,11 @@
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
     </head>
     <body>
+        @if (session('flash_message'))
+            <div class="flash_message bg-success text-center py-3 my-0">
+                {{ session('flash_message') }}
+            </div>
+        @endif
         <div id="app">
           <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
               <div class="container">
@@ -83,9 +88,9 @@
 
                       <!-- Right Side Of Navbar -->
                       <ul class="navbar-nav ml-auto">
-                        <li><a href="mypage">マイページ</a></li>
-                        <li><a href="create">ムチを作成</a></li>
-                        <li><a href="reward">ご褒美一覧</a></li>
+                        <li><a href="{{ route('admin.mypage') }}" >マイページ</a></li>
+                        <li><a href="{{ route('admin.create') }}">ムチを作成</a></li>
+                        <li><a href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
                     </ul>
                           @endguest
                   </div>
@@ -96,5 +101,9 @@
                 @yield('content')
             </main>
         </div>
+        @yield('js')
+        <script>
+            
+        </script>
     </body>
 </html>

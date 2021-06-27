@@ -12,6 +12,7 @@
       </form>
     </div>
     <div class="row">
+      <p>敢えてデータを手入力で挿入させる</p>
         <table class="table">
           <thead>
               <tr>
@@ -20,10 +21,12 @@
               </tr>
           </thead>
           <tbody>
+            @foreach($rewards as $rewad)
               <tr>
-                  <td><a href ="#">タイトル</a></td>
-                  <td><a href ="#">100</a></td>
+                  <td>{{ $rewad->title }}</td>
+                  <td><a href ="#">{{ $rewad->point }}</a></td>
               </tr>
+            @endforeach
           </tbody>
       </table>
     </div>

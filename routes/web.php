@@ -12,15 +12,17 @@
 */
 
 Route::prefix('admin')->group(function () {
-    Route::get('mypage', 'ActionController@mypage');
-    Route::get('reward', 'ActionController@reward');
-    Route::post('new', 'ActionController@new');
+    Route::get('mypage', 'ActionController@mypage')->name('admin.mypage');
+    Route::get('reward', 'ActionController@reward')->name('admin.reward');
+    Route::get('mypageedit', 'ActionController@mypageedit');
+    Route::post('pointget', 'ActionController@pointget');
+    Route::post('pointless', 'ActionController@pointless');
 });
 
 Route::resource('admin', 'ActionController')->middleware('auth');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 Auth::routes();

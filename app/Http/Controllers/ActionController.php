@@ -6,6 +6,9 @@ use App\Action;
 use Illuminate\Http\Request;
 use App\User;
 use App\Post;
+use App\Reward;
+use Carbon\Carbon;
+use Auth;
 
 class ActionController extends Controller
 {
@@ -16,17 +19,24 @@ class ActionController extends Controller
      */
     public function index()
     {
-        return view('admin.home');
+        // 降順orderByで
+        $posts = Post::orderBy('id', 'desc')->get();
+
+        return view('admin.home', ['posts' => $posts]);
     }
 
     public function mypage() 
     {
-        return view('admin.mypage');
+        $posts = Post::all();
+
+        return view('admin.mypage', ['posts' => $posts]);
     }
 
     public function reward() 
     {
-        return view('admin.reward');
+        $rewards = Reward::all();
+
+        return view('admin.reward', ['rewards' => $rewards]);
     }
 
     /**
@@ -39,11 +49,34 @@ class ActionController extends Controller
         return view('admin.create');
     }
 
-    public function new(Request $request) 
+    public function store(Request $request)
     {
-        $post = $request->all();
+        $this->validate($request, Post::$rules);
+        $post = new Post;
+        $post->period = Carbon::now('Asia/Tokyo')->addDays($request->period);
+        $post->fill($request->except(['_token', 'period']));
+        $post->save();
 
-        redirect('admin');
+        session()->flash('flash_message', '投稿が完了しました');
+        return redirect('admin');
+    }
+
+    public function pointget(Request $request)
+    {
+        Auth::user()->point += $request->user_point;
+        Auth::user()->update();
+        Post::find($request->id)->delete();
+
+        return redirect('admin');
+    }
+
+    public function pointless(Request $request)
+    {
+        Auth::user()->point -= $request->death_point;
+        Auth::user()->update();
+        Post::find($request->id)->delete();
+
+        return redirect('admin');
     }
 
     /**
@@ -52,10 +85,12 @@ class ActionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+    public function mypageedit()
     {
-        //
+        return view('admin.mypageedit');
     }
+
 
     /**
      * Display the specified resource.
@@ -76,7 +111,7 @@ class ActionController extends Controller
      */
     public function edit(Action $action)
     {
-        //
+        return view('admin.edit', ['action' => $action]);
     }
 
     /**
@@ -88,7 +123,9 @@ class ActionController extends Controller
      */
     public function update(Request $request, Action $action)
     {
-        //
+        $action = $request->all();
+        $action->save();
+        return redirect('admin/'.$action->id);
     }
 
     /**
@@ -97,8 +134,10 @@ class ActionController extends Controller
      * @param  \App\Action  $action
      * @return \Illuminate\Http\Response
      */
+    // 消去機能は基本的に使わない方針で
     public function destroy(Action $action)
     {
-        //
+         $action->delete();
+         return redirect('admin');
     }
 }

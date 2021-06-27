@@ -7,28 +7,66 @@
     <div class="row">
       <div class="col">
         <h3>今週の課題</h3>
-        <h4>現在の獲得ポイント:300P</h4>
+        <h4>現在の獲得ポイント:{{ Auth::user()->point }}</h4>
       </div>
     </div>
     <div class="row">
       <table class="table">
         <thead>
           <tr>
-            <th width="60%">クエスト一覧</th>
-            <th width="10%">期限</th>
+            <th width="50%">クエスト一覧</th>
+            <th width="20%">期限</th>
             <th width="10%">GETポイント</th>
             <th width="20%">Deathポイント</th>
           </tr>
         </thead>
         <tbody>
+          @foreach($posts as $post)
           <tr>
-            <td>タイトル</td>
-            <td>後2日！</td>
-            <td>100GET!!</td>
-            <td>-100😞</td>
+            <td>
+              <form method="post" action="{{ action('ActionController@pointget', ['id' => $post->id]) }}" onSubmit="return check()">
+                <button type="submit" class="btn btn-primary p-1" >{{ $post->title }}</button>
+                @csrf
+                  <input type="hidden" name="user_point" value="{{$post->user_point}}">
+              </form>
+              <form method="post" action="{{ action('ActionController@pointless', ['id' => $post->id]) }}" onSubmit="giveup()">
+                <button type="submit" class="btn btn-outline-danger p-0">諦める</button>
+                @csrf 
+                  <input type="hidden" name="death_point" id="{{ $post->death_point }}">
+              </form>
+            </td>
+            <td>{{ preg_replace("/[0-9]{4}/", "", $post->period) }}日</td>
+            
+            <!-- コントローラー側でmthodで残り時間を計算するプログラムを実装する -->
+            <td>{{ $post->user_point }}point</td>
+            <td>-{{ $post->death_point }}point</td>
+            <td></td>
           </tr>
+          @endforeach
         </tbody>
       </table>
     </div>
   </div>
+@endsection
+
+@section('js')
+<script>
+function check(){
+  if(window.confirm('本当に実行してもよろしいですか？')){ // 確認ダイアログを表示
+      return true; // 「OK」時は送信を実行
+  }
+  else{ // 「キャンセル」時の処理
+  // 警告ダイアログを表示
+      return false; // 送信を中止
+  }
+}
+function giveup() {
+  if(window.confirm('本当に諦めて良いんですか！？')) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+</script>
 @endsection

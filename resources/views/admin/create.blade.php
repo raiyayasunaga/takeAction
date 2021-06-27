@@ -4,37 +4,34 @@
 
 @section('content')
   <div class="container">
-  <form action="{{ action('ActionController@new') }}" method="post" enctype="multipart/form-data">
+  <form action="{{ action('ActionController@store') }}" method="post" enctype="multipart/form-data">
 
     <div class="row">
         <div class="col">
           <h2>ムチ作成画面</h2>
-            <input type="text" name="title" class="form-control" value="">
+            <input type="text" name="title" class="form-control" placeholder="例：彼女を作る！！" value="{{ old('title') }}">
         </div>
     </div>
     <div class="row my-3">
           <div class="col-md-4">
             <h4>期間</h4>
-              <select id="period" class="form-control" name="period">
-                  <option value="">----</option>
-                  @for ($i = 1; $i <= 10; $i++)
-                      <option value="{{ $i }}"
-                              @if(old('period') == $i) selected @endif>{{ $i . '日間' }}</option>
-                  @endfor
+            <!-- コントローラーに日付の計算で組む今日＋ userからもらった数字Carbonを利用 -->
+            <select id="" name="period" class="form-control">
+                <option value="">選択して下さい</option>
+                @for ($i = 1; $i <= 10; $i++)
+                  <option value="{{ $i }}"
+                    @if(old('preiod') == $i) select @endif>{{ $i . '日間'}}
+                  </option>
+                @endfor
               </select>
-              @if ($errors->has('period'))
-                  <span class="help-block">
-                      <strong>{{ $errors->first('period') }}</strong>
-                  </span>
-              @endif
           </div>
           <div class="col-md-4">
             <h4>報酬設定</h4>
-              <select name="point" id="" class="form-control">
-                <option value="">----</option>
+              <select name="user_point" id="" class="form-control">
+                <option value="">選択して下さい</option>
                 @for ($i = 1; $i <= 100; $i++)
                   <option value="{{ $i }}"
-                    @if(old('point') == $i) select @endif>{{ $i . 'point'}}
+                    @if(old('user_point') == $i) select @endif>{{ $i . 'point'}}
                   </option>
                 @endfor
               </select>
@@ -44,6 +41,17 @@
                 </span>
               @endif
           </div>
+          <div class="col-md-4">
+            <h4>減点設定</h4>
+            <select name="death_point" id="" class="form-control">
+              <option value="">選択して下さい</option>
+              @for ($i = 1; $i <= 100; $i++)
+                <option value="{{ $i }}"
+                  @if(old('death_point') == $i) select @endif>{{'-'. $i . 'point'}}
+                </option>
+              @endfor
+            </select>
+          </div>
       </div>
       @csrf
       <input type="submit" value="新規追加">
@@ -51,3 +59,16 @@
   </div>
 @endsection
 
+@section('js')
+<script>
+function recheck(){
+  if(window.confirm('本当に実行してもよろしいですか？. '<br>' .＊消去編集できません')){ // 確認ダイアログを表示
+      return true; // 「OK」時は送信を実行
+  }
+  else{ // 「キャンセル」時の処理
+  // 警告ダイアログを表示
+      return false; // 送信を中止
+  }
+}
+</script>
+@endsection

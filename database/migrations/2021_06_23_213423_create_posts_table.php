@@ -16,8 +16,9 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('title');
-            $table->string('period');
-            $table->string('point');
+            $table->date('period');
+            $table->integer('user_point');
+            $table->integer('death_point');
             $table->timestamps();
         });
     }
