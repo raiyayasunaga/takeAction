@@ -29,10 +29,10 @@
                 @csrf
                   <input type="hidden" name="user_point" value="{{$post->user_point}}">
               </form>
-              <form method="post" action="{{ action('ActionController@pointless', ['id' => $post->id]) }}" onSubmit="giveup()">
+              <form method="post" action="{{ action('ActionController@pointless', ['id' => $post->id]) }}" onSubmit="return giveup()">
                 <button type="submit" class="btn btn-outline-danger p-0">諦める</button>
                 @csrf 
-                  <input type="hidden" name="death_point" id="{{ $post->death_point }}">
+                  <input type="hidden" name="death_point" value="{{ $post->death_point }}">
               </form>
             </td>
             <td>{{ preg_replace("/[0-9]{4}/", "", $post->period) }}日</td>

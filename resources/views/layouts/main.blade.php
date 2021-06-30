@@ -23,18 +23,29 @@
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+        <!-- フラッシュメッセージを追加する時に必要なscript -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <!-- プッシュ機能 -->
+        <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+        <script>
+        window.OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+            OneSignal.init({
+            appId: "43e804fb-c314-4419-be43-36b84e63ec73",
+            });
+        });
+        </script>
     </head>
     <body>
-        @if (session('flash_message'))
-            <div class="flash_message bg-success text-center py-3 my-0">
-                {{ session('flash_message') }}
-            </div>
-        @endif
+        
         <div id="app">
           <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
               <div class="container">
                   <a class="navbar-brand" href="{{ url('admin') }}">
-                      <img src="/img/chihiro042.jpg" width="50px;">
+                      <img src="{{ asset('storage/img/' . Auth::user()->image_profile) }}" height="50px;">
                   </a>
                     <ul class="navbar-nav ml-auto">
                             <nav class="navMenu">
@@ -91,6 +102,7 @@
                         <li><a href="{{ route('admin.mypage') }}" >マイページ</a></li>
                         <li><a href="{{ route('admin.create') }}">ムチを作成</a></li>
                         <li><a href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
+                        <li><a href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
                     </ul>
                           @endguest
                   </div>
@@ -101,9 +113,21 @@
                 @yield('content')
             </main>
         </div>
+
         @yield('js')
         <script>
-            
+            @if (session('msg_success'))
+                $(function () {
+                    toastr.success('{{ session('msg_success') }}');
+                });
+            @endif
+
+            // {{--失敗時--}}
+            @if (session('msg_danger'))
+                $(function () {
+                    toastr.danger('{{ session('msg_danger') }}');
+                });
+            @endif
         </script>
     </body>
 </html>

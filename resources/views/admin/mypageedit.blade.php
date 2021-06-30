@@ -4,24 +4,44 @@
 
 @section('content')
   <div class="container">
-    <div class="row my-3">
-      <h4>マイ画像の設定</h4>
-        <div class="col">
-          <img src="/img/" id="img" width="100px">
-        </div>
-    </div>
-    <div class="row my-3"> 
-      <h4>名前の変更</h4>
-      <div class="col">
-        <input type="text" class="form-control" value="{{ Auth::user()->name }}">
+    <form action="{{ action('ActionController@mypagecreate') }}" method="post" enctype="multipart/form-data">
+      <div class="row my-3">
+        <h4>マイページ画像の設定</h4>
       </div>
-    </div>
-    <div class="row my-3">
-      <h4>通知設定</h4>
-      <button>オン</button>
-    </div>
-    @csrf
-    <input type="submit" value="追加する">
+      <div class="row my-3">
+      <input type="file" name="image" id="image_profile" onchange="previewImage(this);">
+      <div class="col-md-3">
+        <img  src="{{ asset('storage/img/'. Auth::user()->image_profile) }}" style="height: 100px; border: 1px solid black;">
+      </div>
+      <div class="col-md-1">
+      <p>変更後</p>
+      </div>
+        <div class="col-md-3">
+          <img  src="/img" id="Newimg" style="height: 200px; border: 1px solid black;">
+        </div>
+      </div>
+      <div class="row my-3"> 
+        <h4>名前の変更</h4>
+        <div class="col-md-5">
+          <input name="name" type="text" class="form-control" value="{{ Auth::user()->name }}">
+        </div>
+      </div>
+      @csrf
+      <input type="submit" value="追加する">
+    </form>
   </div>
+@endsection
+
+@section('js')
+<script>
+    function previewImage(obj)
+  {
+    let fileReader = new FileReader();
+    fileReader.onload = (function() {
+      document.getElementById('Newimg').src = fileReader.result;
+    });
+    fileReader.readAsDataURL(obj.files[0]);
+  }
+</script>
 @endsection
 

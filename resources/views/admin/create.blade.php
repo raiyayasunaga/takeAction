@@ -4,12 +4,18 @@
 
 @section('content')
   <div class="container">
-  <form action="{{ action('ActionController@store') }}" method="post" enctype="multipart/form-data">
-
+  <form action="{{ action('ActionController@store') }}" onSubmit="return" method="post" enctype="multipart/form-data">
+    @if (count($errors) > 0)
+      <ul>
+          @foreach($errors->all() as $e)
+              <li>{{ $e }}</li>
+          @endforeach
+      </ul>
+    @endif
     <div class="row">
         <div class="col">
           <h2>ムチ作成画面</h2>
-            <input type="text" name="title" class="form-control" placeholder="例：彼女を作る！！" value="{{ old('title') }}">
+            <input type="text" name="title" class="form-control" placeholder="例：1日7時間勉強する！" value="{{ old('title') }}">
         </div>
     </div>
     <div class="row my-3">

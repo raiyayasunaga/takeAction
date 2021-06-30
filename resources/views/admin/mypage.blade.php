@@ -5,26 +5,30 @@
 @section('content')
   <div class="container">
     <h3 class="mb-5"><a href="mypageedit">マイページの設定</a></h3>
-    <h3 class="my-3">投稿画面の設定</h3>
-    <div class="row">
+    <div class="row mt-5">
+    <h3>購入履歴</h3>
       <table class="table">
         <thead>
           <tr>
-            <th width="70%">タイトル</th>
-            <th widht="10%">編集</th>
-            <th width="10%">通知設定</th>
+            <th width="80%">タイトル</th>
+            <th width="10%">編集</th>
+            <th width="10%">購入日</th>
           </tr>
         </thead>
         <tbody>
-          @foreach($posts as $post)
-          <tr>
-            <td>{{ $post->title }}</td>
-            <td><a href="{{ route('admin.edit', $post->id) }}">編集</a></td>
-            <td>通知設定</td>
-          </tr>
+          @foreach($rewards as $reward)
+            <tr>
+              <td>{{ $reward->title }}</td>
+              <td><a href="{{ route('admin.edit', $reward->id) }}">編集</a></td>
+              <!-- createad_atの正規表現 -->
+              <td>{{ preg_replace("/[0-9]{4}|([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]/", "", $reward->created_at) }}</td>
+            </tr>
           @endforeach
         </tbody>
       </table>
+        <div class="col">
+        </div>
+      </div>
     </div>
   </div>
 @endsection
