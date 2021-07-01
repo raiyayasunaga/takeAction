@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('point')->default('100');
             $table->string('image_profile')->nullable();
+            $table->string('purpose')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

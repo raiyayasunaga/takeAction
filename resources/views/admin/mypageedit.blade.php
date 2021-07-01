@@ -26,8 +26,12 @@
           <input name="name" type="text" class="form-control" value="{{ Auth::user()->name }}">
         </div>
       </div>
+      <div class="row my-3">
+        <h4>一言目標</h4>
+        <input name="purpose" type="text" class="form-control" value="{{ Auth::user()->purpose }}">
+      </div>
       @csrf
-      <input type="submit" value="追加する">
+      <input type="submit" value="変更する">
     </form>
   </div>
 @endsection

@@ -3,13 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+
 
 class Post extends Model
 {
-    public function getRemainingTimeUntilDeadline(){
-        return $this->period - today;
-      }
-    
+    public function DaysLeft()
+    {
+      return Carbon::now('Asia/Tokyo')->subDays(1)->addSeconds(1)->diffInDays($this->period);
+    }
+ 
     protected $guarded = array('id');
     
     public static $rules = array(

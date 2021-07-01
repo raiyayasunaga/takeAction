@@ -6,7 +6,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <h3>今週の課題</h3>
+        <h3>最近の課題</h3>
         <h4>現在の獲得ポイント:{{ Auth::user()->point }}</h4>
       </div>
     </div>
@@ -35,9 +35,9 @@
                   <input type="hidden" name="death_point" value="{{ $post->death_point }}">
               </form>
             </td>
-            <td>{{ preg_replace("/[0-9]{4}/", "", $post->period) }}日</td>
             
             <!-- コントローラー側でmthodで残り時間を計算するプログラムを実装する -->
+            <td>残り：{{ $post->DaysLeft() }}日</td>
             <td>{{ $post->user_point }}point</td>
             <td>-{{ $post->death_point }}point</td>
             <td></td>

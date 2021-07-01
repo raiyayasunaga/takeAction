@@ -14,6 +14,7 @@
 Route::prefix('admin')->group(function () {
     Route::get('mypage', 'ActionController@mypage')->name('admin.mypage');
     Route::get('reward', 'ActionController@reward')->name('admin.reward');
+    Route::get('users', 'ActionController@users')->name('admin.users');
     Route::get('reward_create', function (Request $request) {
         return view('admin.reward_create');
     })->name('admin.reward_create');

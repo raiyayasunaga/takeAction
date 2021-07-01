@@ -48,4 +48,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Reward');
     }
+
+    public function rewardrecord()
+    {
+        return $this->hasMany('App\Rewardrecord');
+    }
+
 }

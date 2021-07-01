@@ -24,7 +24,8 @@
             <!-- コントローラーに日付の計算で組む今日＋ userからもらった数字Carbonを利用 -->
             <select id="" name="period" class="form-control">
                 <option value="">選択して下さい</option>
-                @for ($i = 1; $i <= 10; $i++)
+                <option value="1" @if(old('preiod') == 1) select @endif>今日中</option>
+                @for ($i = 2; $i <= 10; $i++)
                   <option value="{{ $i }}"
                     @if(old('preiod') == $i) select @endif>{{ $i . '日間'}}
                   </option>

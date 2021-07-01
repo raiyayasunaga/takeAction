@@ -30,6 +30,7 @@
                   @csrf
                   <input type="hidden" name="reward_point" value="{{$reward->reward_point}}">
                   <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="">
+                  <input type="hidden" name="title" value="{{ $reward->title }}" id="">
                 </form>
                   <td>{{ $reward->reward_point }}</td>
               </tr>
@@ -43,7 +44,7 @@
 @section('js')
 <script>
   function check() {
-    if(window.confirm('本当に購入してもよろしいですか？')){ // 確認ダイアログを表示
+    if(window.confirm(`本当にを購入してもよろしいですか？`)){ // 確認ダイアログを表示
       return true; // 「OK」時は送信を実行
     }
     else{ // 「キャンセル」時の処理

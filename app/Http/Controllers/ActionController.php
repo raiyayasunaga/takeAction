@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Post;
 use App\Reward;
+use App\Rewardrecord;
 use Carbon\Carbon;
 use Auth;
 
@@ -20,18 +21,44 @@ class ActionController extends Controller
     public function index()
     {
         // 降順orderByで
+
+        // バッチcronで自動的に消去してくれる
         $posts = Post::where('user_id', Auth::id())
         ->orderBy('created_at', 'desc') 
-            ->get();  
+            ->get();
+            
+        foreach($posts as $post) {
+            if($post->DaysLeft() == 0) {
+                Auth::user()->point -= $post->death_point;
+                Auth::user()->update();
+                $post->delete();
+            session()->flash('msg_success', 'ミッション失敗しました');
+            }
+        }
+
+        $posts = Post::where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc') 
+            ->get();
 
         return view('admin.home', ['posts' => $posts]);
     }
 
     public function mypage() 
     {
-        $rewards = Reward::where('user_id', Auth::id())
+        $rewards = Rewardrecord::where('user_id', Auth::id())
         ->orderBy('created_at', 'desc')
-            ->get();
+        ->get();
+        
+        foreach($rewards as $reward) {
+            if($reward->RewardPeriod() == 0) {
+                $reward->delete();
+            session()->flash('msg_success', '有効期限が過ぎました');
+            }
+        }
+
+        $rewards = Rewardrecord::where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         return view('admin.mypage', ['rewards' => $rewards]);
     }
@@ -102,16 +129,23 @@ class ActionController extends Controller
     public function rewardsget(Request $request)
     {
         $validate_rule = [
-            'point' => 'integer|min: 1',
+            'reward_point' => 'integer|max:'.Auth::user()->point,
+            // titleを複数購入防ぐため
         ];
  
          $this->validate($request, $validate_rule);
-
         Auth::user()->point -= $request->reward_point;
         Auth::user()->update();
-        Auth::user()->id = $request->user_id;
 
-        session()->flash('msg_success', '購入完了！');
+        $record = new Rewardrecord;
+        $record->record_title = $request->title;
+        $record->user_id = Auth::id();
+        $record->reward_period = Carbon::now();
+        $record->save();
+
+        // ユーザーのIDとリワードID購入履歴
+
+     ;   session()->flash('msg_success', '購入完了！');
         return redirect('admin/reward');
     }
 
@@ -132,8 +166,7 @@ class ActionController extends Controller
         $profile = Auth::user();
         $form = $request->all();
 
-        $profile->image_profile = $request->profile_image;
-        $profile->name = $request->name;
+        $profile->purpose = $request->purpose;
 
         if(isset($form['image'])) {
             $path = $request->file('image')->store('public/img');
@@ -141,14 +174,27 @@ class ActionController extends Controller
         } elseif ($request->file('image')) {
             $path = $request->file('image')->store('public/img');
             $profile->image_profile = basename($path);
+            $profile->image_profile = $request->image_profile;
         } else {
-            $profile->image_profile = null;
+            $profile->image_profile = $request->image_profile;
         }
 
         $profile->fill($form)->save();
 
         session()->flash('msg_success', 'プロフィールを変更しました');
         return redirect('admin/mypage');
+    }
+
+    public function users() 
+    {
+        $users = User::all();
+
+        return view('admin.users', ['users' => $users]);
+    }
+
+    public function usersindex()
+    {
+        return view('admin.usersspecific');
     }
 
 
@@ -164,7 +210,7 @@ class ActionController extends Controller
 
 
 
-
+// 以下のコードはresourceで定義された必要のないコードなので、、
 
     /**
      * Display the specified resource.

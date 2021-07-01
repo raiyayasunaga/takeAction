@@ -53,6 +53,7 @@
                                     <li><a href="mypage">マイページ</a></li>
                                     <li><a href="create">ムチを作成</a></li>
                                     <li><a href="reward">ご褒美一覧</a></li>
+                                    <li><a href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
                                 </ul>
                             </nav>
 
@@ -98,12 +99,13 @@
                       </ul>
 
                       <!-- Right Side Of Navbar -->
-                      <ul class="navbar-nav ml-auto">
-                        <li><a href="{{ route('admin.mypage') }}" >マイページ</a></li>
-                        <li><a href="{{ route('admin.create') }}">ムチを作成</a></li>
-                        <li><a href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
-                        <li><a href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
-                    </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li><a href="{{ route('admin.mypage') }}" >マイページ</a></li>
+                            <li><a href="{{ route('admin.create') }}">ムチを作成</a></li>
+                            <li><a href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
+                            <li><a href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
+                            <li><a href="{{ route('admin.users') }}">利用しているユーザー</a></li>
+                        </ul>
                           @endguest
                   </div>
               </div>
