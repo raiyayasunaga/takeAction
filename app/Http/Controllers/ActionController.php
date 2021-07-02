@@ -28,7 +28,7 @@ class ActionController extends Controller
             ->get();
             
         foreach($posts as $post) {
-            if($post->DaysLeft() == 0) {
+            if($post->getRemainingHours() == 0) {
                 Auth::user()->point -= $post->death_point;
                 Auth::user()->update();
                 $post->delete();
@@ -50,7 +50,7 @@ class ActionController extends Controller
         ->get();
         
         foreach($rewards as $reward) {
-            if($reward->RewardPeriod() == 0) {
+            if($reward->getRemaindingDays() == 0) {
                 $reward->delete();
             session()->flash('msg_success', '有効期限が過ぎました');
             }
@@ -192,9 +192,11 @@ class ActionController extends Controller
         return view('admin.users', ['users' => $users]);
     }
 
-    public function usersindex()
+    public function usershow()
     {
-        return view('admin.usersspecific');
+        $users = User::all();
+
+        return view('admin.usershow', ['users' => $users]);
     }
 
 
@@ -220,7 +222,7 @@ class ActionController extends Controller
      */
     public function show(Action $action)
     {
-        //
+        // 
     }
 
     /**

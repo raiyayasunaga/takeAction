@@ -4,7 +4,7 @@
 
 @section('content')
   <div class="container">
-  <form action="{{ action('ActionController@store') }}" onSubmit="return" method="post" enctype="multipart/form-data">
+  <form action="{{ route('admin.store') }}" onSubmit="return" method="post" enctype="multipart/form-data">
     @if (count($errors) > 0)
       <ul>
           @foreach($errors->all() as $e)

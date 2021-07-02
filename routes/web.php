@@ -15,7 +15,9 @@ Route::prefix('admin')->group(function () {
     Route::get('mypage', 'ActionController@mypage')->name('admin.mypage');
     Route::get('reward', 'ActionController@reward')->name('admin.reward');
     Route::get('users', 'ActionController@users')->name('admin.users');
-    Route::get('reward_create', function (Request $request) {
+    Route::get('usershow', 'ActionController@usershow')->name('admin.usershow');
+    
+    Route::get('reward_create', function() {
         return view('admin.reward_create');
     })->name('admin.reward_create');
     Route::get('mypageedit', 'ActionController@mypageedit');
@@ -38,7 +40,10 @@ Route::get('web_push_test', function(){
 
 });
 
-Route::resource('admin', 'ActionController')->middleware('auth');
+
+Route::resource('admin', 'ActionController')->except([
+    'edit','update', 'show', 'destory'
+])->middleware('auth');
 
 Route::get('/', function () {
     return view('auth/login');

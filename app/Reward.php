@@ -12,7 +12,7 @@ class Reward extends Model
     protected $guarded = array('id');
 
     public static $rules = array (
-        "title" => "required",
+        "title" => "required | string | min: 10",
         "reward_point" => "required",
     );
     

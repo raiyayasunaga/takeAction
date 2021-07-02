@@ -17,7 +17,7 @@
             <th width="50%">クエスト一覧</th>
             <th width="20%">期限</th>
             <th width="10%">GETポイント</th>
-            <th width="20%">Deathポイント</th>
+            <th width="20%">マイナスポイント</th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +37,7 @@
             </td>
             
             <!-- コントローラー側でmthodで残り時間を計算するプログラムを実装する -->
-            <td>残り：{{ $post->DaysLeft() }}日</td>
+            <td>残り：{{ $post->getRemainingHours() }}時間</td>
             <td>{{ $post->user_point }}point</td>
             <td>-{{ $post->death_point }}point</td>
             <td></td>

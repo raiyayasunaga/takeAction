@@ -8,15 +8,17 @@ use Carbon\Carbon;
 
 class Post extends Model
 {
-    public function DaysLeft()
-    {
-      return Carbon::now('Asia/Tokyo')->subDays(1)->addSeconds(1)->diffInDays($this->period);
-    }
+
+    protected $casts = [
+      'period' => 'datetime'
+    ];
+
+    // phpは全てが
  
     protected $guarded = array('id');
     
     public static $rules = array(
-      'title' => 'required',
+      'title' => 'required | string | min: 10',
       'period' => 'required',
       'user_point' => 'required',
       'death_point' => 'required',
@@ -26,5 +28,10 @@ class Post extends Model
     {
       return $this->belongsTo('App\User');
     }
+
+  public function getRemainingHours(){
+      $time = $this->period->diffInHours($this->created_at);
+      return $time;
+  }
 
 }
