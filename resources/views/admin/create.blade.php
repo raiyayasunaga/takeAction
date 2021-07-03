@@ -21,8 +21,10 @@
     <div class="row my-3">
           <div class="col-md-4">
             <h4>期間</h4>
-
-            <input type="text" class="form-control" name="period" id="date" value="{{ old('period') }}">
+            始める日
+            <input type="text" class="form-control" name="period" id="start_date" value="{{ old('period') }}">
+            終わりの日
+            <input type="text" class="form-control" name="period" id="end_date" value="{{ old('period') }}">
             <!-- コントローラーに日付の計算で組む今日＋ userからもらった数字Carbonを利用 -->
           </div>
           <div class="col-md-4">
@@ -74,7 +76,8 @@ window.onload = function()
   }
 }
     $(function(){
-      $("#date").datepicker();
+      $("#start_date").datepicker();
+      $("#end_date").datepicker();
   });
 </script>
 @endsection

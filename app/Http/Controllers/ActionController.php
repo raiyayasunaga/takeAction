@@ -9,6 +9,7 @@ use App\Post;
 use App\Reward;
 use App\Rewardrecord;
 use Carbon\Carbon;
+use Storage;
 use Auth;
 
 class ActionController extends Controller
@@ -182,12 +183,11 @@ class ActionController extends Controller
         $profile->purpose = $request->purpose;
 
         if(isset($form['image'])) {
-            $path = $request->file('image')->store('public/img');
-            $profile->image_profile = basename($path);
+            $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+            $profile->image_profile = Storage::disk('s3')->url($path);
         } elseif ($request->file('image')) {
-            $path = $request->file('image')->store('public/img');
-            $profile->image_profile = basename($path);
-            $profile->image_profile = $request->image_profile;
+            $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+            $profile->image_profile = Storage::disk('s3')->url($path);
         } else {
             $profile->image_profile = $request->image_profile;
         }

@@ -51,7 +51,7 @@
           <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
               <div class="container">
                   <a class="navbar-brand" href="{{ url('admin') }}">
-                      <img src="{{ asset('storage/img/' . Auth::user()->image_profile) }}" height="50px;">
+                      <img src="{{ Auth::user()->image_profile }}" height="50px;">
                   </a>
                     <ul class="navbar-nav ml-auto">
                             <nav class="navMenu">

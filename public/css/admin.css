@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 .navbar-nav li {
   margin-right: 20px;
 }
@@ -10,7 +9,6 @@ a {
 }
 
 /*ナビのスタイル*/
-
 nav.navMenu {
   position: fixed;
   z-index: 12;
@@ -22,7 +20,6 @@ nav.navMenu {
   height: 100%;
   display: none;
 }
-
 nav.navMenu ul {
   width: 100%;
   margin: 0 auto;
@@ -32,18 +29,15 @@ nav.navMenu ul {
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
 }
-
 nav.navMenu li {
   font-size: 24px;
   list-style-type: none;
   width: 100%;
   padding-bottom: 0px;
 }
-
 nav.navMenu li:last-child {
   padding-bottom: 0;
 }
-
 nav.navMenu li a {
   display: block;
   color: #fff;
@@ -53,7 +47,6 @@ nav.navMenu li a {
 }
 
 /*ボタンのスタイル*/
-
 .hamburgar {
   position: fixed;
   right: 18px;
@@ -64,13 +57,11 @@ nav.navMenu li a {
   z-index: 13;
   display: block;
 }
-
 @media screen and (min-width: 854px) {
   .hamburgar {
     display: none;
   }
 }
-
 .hamburgar span {
   display: block;
   position: absolute;
@@ -79,30 +70,23 @@ nav.navMenu li a {
   transition: 0.35s ease-in-out;
   left: 6px;
 }
-
 .hamburgar span:nth-child(1) {
   top: 10px;
 }
-
 .hamburgar span:nth-child(2) {
   top: 20px;
 }
-
 .hamburgar span:nth-child(3) {
   top: 30px;
 }
-
 .hamburgar .active span:nth-child(1) {
   top: 18px;
   left: 6px;
   transform: rotate(-45deg);
   border-bottom: solid 3px #C1C1C1;
 }
-
-.hamburgar .active span:nth-child(2),
-.hamburgar .active span:nth-child(3) {
+.hamburgar .active span:nth-child(2), .hamburgar .active span:nth-child(3) {
   top: 18px;
   transform: rotate(45deg);
   border-bottom: solid 3px #C1C1C1;
 }
-
