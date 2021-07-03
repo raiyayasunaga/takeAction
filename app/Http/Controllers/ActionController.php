@@ -75,9 +75,10 @@ class ActionController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         $this->validate($request, Post::$rules);
         $post = new Post;
-        $post->period = Carbon::now('Asia/Tokyo')->addDays($request->period);
+        $post->period = Carbon::now('Asia/Tokyo');
         $post->fill($request->except(['_token', 'period']));
         $post->user_id = Auth::id();
         $post->save();
@@ -148,6 +149,18 @@ class ActionController extends Controller
      ;   session()->flash('msg_success', '購入完了！');
         return redirect('admin/reward');
     }
+
+    public function rewardupdate(Request $request)
+    {
+        $reward = Reward::find($request->id);
+        $form = $request->all();
+        $reward->fill($form)->save();
+        dd($request->all());
+
+        return redirect('admin/reward');
+    }
+
+
 
     /**
      * Store a newly created resource in storage.

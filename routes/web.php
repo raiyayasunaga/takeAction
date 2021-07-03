@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Http\Request;
+use App\Reward;
 
 Route::prefix('admin')->group(function () {
     Route::get('mypage', 'ActionController@mypage')->name('admin.mypage');
@@ -27,7 +29,18 @@ Route::prefix('admin')->group(function () {
     Route::post('rewardscreate', 'ActionController@rewardcreate');
     Route::post('rewardsget', 'ActionController@rewardsget');
 
+    // コントローラーに書くの面倒からここに書いた
+    Route::get('reward_edit', function(Request $request) {
+        $rewards = Reward::find($request->id);
+
+        return view('admin.reward_edit', ['reward_form' => $rewards]);
+    })->name('reward.edit');
+    Route::post('reward_update', 'ActionController@rewardupdate');
     Route::post('mypagecreate', 'ActionController@mypagecreate');
+
+    Route::get('test', function() {
+        return view('admin.test');
+    });
 });
 
 Route::get('web_push/create', 'WebPushController@create');

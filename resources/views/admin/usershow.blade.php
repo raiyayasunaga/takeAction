@@ -17,7 +17,7 @@
           </thead>
           <tbody>
             <tr>
-              <td>叱って貰うわ</td>
+              <td></td>
               <td>叱って貰うわ</td>
               <td>叱って貰うわ</td>
             </tr>

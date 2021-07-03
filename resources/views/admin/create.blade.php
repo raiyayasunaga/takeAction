@@ -21,16 +21,9 @@
     <div class="row my-3">
           <div class="col-md-4">
             <h4>期間</h4>
+
+            <input type="text" class="form-control" name="period" id="date" value="{{ old('period') }}">
             <!-- コントローラーに日付の計算で組む今日＋ userからもらった数字Carbonを利用 -->
-            <select id="" name="period" class="form-control">
-                <option value="">選択して下さい</option>
-                <option value="1" @if(old('preiod') == 1) select @endif>今日中</option>
-                @for ($i = 2; $i <= 10; $i++)
-                  <option value="{{ $i }}"
-                    @if(old('preiod') == $i) select @endif>{{ $i . '日間'}}
-                  </option>
-                @endfor
-              </select>
           </div>
           <div class="col-md-4">
             <h4>報酬設定</h4>
@@ -61,21 +54,27 @@
           </div>
       </div>
       @csrf
-      <input type="submit" value="新規追加">
+      <input style="margin-top: 250px;" type="submit" value="新規追加">
       </form>
   </div>
 @endsection
 
 @section('js')
 <script>
-function recheck(){
-  if(window.confirm('本当に実行してもよろしいですか？. '<br>' .＊消去編集できません')){ // 確認ダイアログを表示
-      return true; // 「OK」時は送信を実行
-  }
-  else{ // 「キャンセル」時の処理
-  // 警告ダイアログを表示
-      return false; // 送信を中止
+window.onload = function()
+{
+  function recheck(){
+    if(window.confirm('本当に実行してもよろしいですか？. '<br>' .＊消去編集できません')){ // 確認ダイアログを表示
+        return true; // 「OK」時は送信を実行
+    }
+    else{ // 「キャンセル」時の処理
+    // 警告ダイアログを表示
+        return false; // 送信を中止
+    }
   }
 }
+    $(function(){
+      $("#date").datepicker();
+  });
 </script>
 @endsection

@@ -10,8 +10,11 @@
         <table class="table">
           <thead>
               <tr>
-                  <th width="80%">褒美タイトル</th>
+                  <th width="70%">褒美タイトル</th>
                   <th width="20%">購入ポイント</th>
+                  @if(Auth::user()->id == 1)
+                  <th width="10%">編集</th>
+                  @endif
               </tr>
           </thead>
           <tbody>
@@ -33,6 +36,9 @@
                   <input type="hidden" name="title" value="{{ $reward->title }}" id="">
                 </form>
                   <td>{{ $reward->reward_point }}</td>
+                @if(Auth::user()->name == '頼矢')
+                  <td><a href="{{ route('reward.edit', ['id' => $reward->id]) }}">編集</a></td>
+                @endif
               </tr>
             @endforeach
           </tbody>

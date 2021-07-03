@@ -6,28 +6,34 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- CSRF Token -->
-         {{-- 後の章で説明します --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        {{-- 各ページごとにtitleタグを入れるために@yieldで空けておきます。 --}}
         <title>@yield('title')</title>
 
         <!-- Scripts -->
-         {{-- Laravel標準で用意されているJavascriptを読み込みます --}}
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}"></script>
 
         <!-- Fonts -->
         <link rel="dns-prefetch" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
+        <!-- jquery UI -->
+        
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+        
         <!-- フラッシュメッセージを追加する時に必要なscript -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <!-- 日本語表記 -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script> 
 
+        <!-- jquery ui -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+                
         <!-- プッシュ機能 -->
         <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
         <script>
@@ -50,10 +56,11 @@
                     <ul class="navbar-nav ml-auto">
                             <nav class="navMenu">
                                 <ul>
-                                    <li><a href="mypage">マイページ</a></li>
-                                    <li><a href="create">ムチを作成</a></li>
-                                    <li><a href="reward">ご褒美一覧</a></li>
+                                    <li><a href="{{ route('admin.mypage') }}" >マイページ</a></li>
+                                    <li><a href="{{ route('admin.create') }}">ムチを作成</a></li>
+                                    <li><a href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
                                     <li><a href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
+                                    <li><a href="{{ route('admin.users') }}">利用しているユーザー</a></li>
                                 </ul>
                             </nav>
 
@@ -118,6 +125,11 @@
 
         @yield('js')
         <script>
+             $(function(){
+                $("#date").datepicker({
+                dateFormat: 'yy年mm月dd日',
+                });
+            });
             @if (session('msg_success'))
                 $(function () {
                     toastr.success('{{ session('msg_success') }}');
