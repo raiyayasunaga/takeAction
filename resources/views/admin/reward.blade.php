@@ -12,7 +12,7 @@
               <tr>
                   <th width="70%">褒美タイトル</th>
                   <th width="20%">購入ポイント</th>
-                  @if(Auth::user()->id == 1)
+                  @if(Auth::user()->name == "頼矢")
                   <th width="10%">編集</th>
                   @endif
               </tr>

@@ -2,6 +2,16 @@
 
 @section('title', '作成画面')
 
+@section('style')
+  @if (Auth::user()->alert_level == 1)
+    <link href="{{ asset('css/level_1.css') }}" rel="stylesheet">
+  @elseif (Auth::user()->alert_level == 2)
+    <link href="{{ asset('css/level_2.css') }}" rel="stylesheet">
+  @elseif (Auth::user()->alert_level == 3)
+    <link href="{{ asset('css/level_3.css') }}" rel="stylesheet">
+  @endif
+@endsection
+
 @section('content')
   <div class="container">
     <div class="row">
@@ -17,7 +27,7 @@
           <tr>
             <th width="50%">クエスト一覧</th>
             <th width="20%">期限</th>
-            <th width="10%">GETポイント</th>
+            <th width="10%">getポイント</th>
             <th width="20%">マイナスポイント</th>
           </tr>
         </thead>
@@ -38,10 +48,13 @@
             </td>
             
             <!-- コントローラー側でmthodで残り時間を計算するプログラムを実装する -->
-            <td>残り：{{ $post->getRemainingHours() }}時間</td>
+            @if($post->getstart() == 0)
+            <td>{{ $post->getendDays() }}{{ $post->getendHours() }}</td>
+              @elseif($post->getstart() > 0)
+            <td>始まるまで後{{ $post->getstart() }}時間</td>
+            @endif
             <td>{{ $post->user_point }}point</td>
             <td>-{{ $post->death_point }}point</td>
-            <td></td>
           </tr>
           @endforeach
         </tbody>

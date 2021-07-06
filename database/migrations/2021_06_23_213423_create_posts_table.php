@@ -17,7 +17,9 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->text('title');
-            $table->date('period');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->date('period')->nullable();
             $table->integer('user_point');
             $table->integer('death_point');
             $table->timestamps();

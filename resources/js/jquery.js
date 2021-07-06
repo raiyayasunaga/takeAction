@@ -16,7 +16,5 @@ $(function () {
     $('.navMenu').fadeOut(1000);
     $('.hamburgar').removeClass('active');
   });
+  
 });
-
-
-

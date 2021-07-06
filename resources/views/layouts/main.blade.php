@@ -11,7 +11,7 @@
         <title>@yield('title')</title>
 
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
 
         <!-- Fonts -->
         <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -22,17 +22,14 @@
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+
         
         <!-- フラッシュメッセージを追加する時に必要なscript -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <!-- 日本語表記 -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script> 
-
-        <!-- jquery ui -->
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        
                 
         <!-- プッシュ機能 -->
         <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
@@ -44,11 +41,12 @@
             });
         });
         </script>
+        @yield('style')
     </head>
     <body>
         
         <div id="app">
-          <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+          <nav class="navbar navbar-expand-md navbar-light shadow-sm bg-white" style="background: -webkit-linear-gradient(to right, #8e0e00, #1f1c18);">
               <div class="container">
                   <a class="navbar-brand" href="{{ url('admin') }}">
                       <img src="{{ Auth::user()->image_profile }}" height="50px;">
@@ -107,29 +105,23 @@
 
                       <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
-                            <li><a href="{{ route('admin.mypage') }}" >マイページ</a></li>
-                            <li><a href="{{ route('admin.create') }}">ムチを作成</a></li>
-                            <li><a href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
-                            <li><a href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
-                            <li><a href="{{ route('admin.users') }}">利用しているユーザー</a></li>
+                            <li><a class="btn btn-success" href="{{ route('admin.mypage') }}" >マイページ</a></li>
+                            <li><a class="btn btn-success" href="{{ route('admin.create') }}">ムチを作成</a></li>
+                            <li><a class="btn btn-success" href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
+                            <li><a class="btn btn-success" href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
+                            <li><a class="btn btn-success" href="{{ route('admin.users') }}">利用しているユーザー</a></li>
                         </ul>
                           @endguest
                   </div>
               </div>
           </nav>
             <main class="py-4">
-                {{-- コンテンツをここに入れるため、@yieldで空けておきます。 --}}
                 @yield('content')
             </main>
         </div>
 
         @yield('js')
         <script>
-             $(function(){
-                $("#date").datepicker({
-                dateFormat: 'yy年mm月dd日',
-                });
-            });
             @if (session('msg_success'))
                 $(function () {
                     toastr.success('{{ session('msg_success') }}');

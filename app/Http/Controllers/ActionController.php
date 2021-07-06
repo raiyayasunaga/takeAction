@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Action;
 use Illuminate\Http\Request;
+use App\Action;
 use App\User;
 use App\Post;
 use App\Reward;
 use App\Rewardrecord;
+use App\Notice;
 use Carbon\Carbon;
 use Storage;
 use Auth;
+use OneSignal;
 
 class ActionController extends Controller
 {
@@ -19,6 +21,8 @@ class ActionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    //  ホームページ
     public function index()
     {
         // 降順orderByで
@@ -29,14 +33,28 @@ class ActionController extends Controller
             ->get();
             
         foreach($posts as $post) {
-            if($post->getRemainingHours() == 0) {
+            if($post->getendHours() == 0) {
                 Auth::user()->point -= $post->death_point;
+                Auth::user()->alert_level = "";
                 Auth::user()->update();
                 $post->delete();
-            session()->flash('msg_success', 'ミッション失敗しました');
+            session()->flash('msg_success', '「'.$post->title . '」' . 'ミッション失敗しました');
+            }
+            elseif($post->getendDays() == 0) {
+                if($post->getendHours() <= 24 && $post->getendHours() > 12) {
+                    Auth::user()->alert_level = "2";
+                    Auth::user()->update();
+                }
+                elseif($post->getendHours() <= 12 && $post->getendHours() > 0) {
+                    Auth::user()->alert_level = "3";
+                    Auth::user()->update();
+                }
+            }
+            elseif($post->getendDays() == 1) {
+                Auth::user()->alert_level = "1";
+                Auth::user()->update();
             }
         }
-
         $posts = Post::where('user_id', Auth::id())
         ->orderBy('created_at', 'desc') 
             ->get();
@@ -44,31 +62,13 @@ class ActionController extends Controller
         return view('admin.home', ['posts' => $posts]);
     }
 
-    public function mypage() 
-    {
-        $rewards = Rewardrecord::where('user_id', Auth::id())
-        ->orderBy('created_at', 'desc')
-        ->get();
-        
-        foreach($rewards as $reward) {
-            if($reward->getRemaindingDays() == 0) {
-                $reward->delete();
-            session()->flash('msg_success', '有効期限が過ぎました');
-            }
-        }
-
-        $rewards = Rewardrecord::where('user_id', Auth::id())
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-        return view('admin.mypage', ['rewards' => $rewards]);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    //  作成画面
     public function create()
     {
         return view('admin.create');
@@ -76,21 +76,44 @@ class ActionController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+
         $this->validate($request, Post::$rules);
         $post = new Post;
+
         $post->period = Carbon::now('Asia/Tokyo');
-        $post->fill($request->except(['_token', 'period']));
+        // dd($post->start_date);
+        $post->start_date = new Carbon($request->start_date);
+        $post->end_date = new Carbon($request->end_date);
+        $post->fill($request->except(['_token', 'period', 'start_date', 'end_date']));
         $post->user_id = Auth::id();
-        $post->save();
+
+        $post->save(); 
+
+        $notice = new Notice;
+        
+        $notice->who = Auth::user()->name;
+        $notice->popose = $request->title;
+        $notice->action = "設定";
+        
+        $notice->save();
+
+        // $message = OneSignal::sendNotificationToAll(
+        //     "Some Message", 
+        //     $url = null, 
+        //     $data = null, 
+        //     $buttons = null, 
+        //     $schedule = null
+        // );
 
         session()->flash('msg_success', '投稿が完了しました');
         return redirect('admin');
     }
 
+    // ポイントクリア、諦めるの処理
     public function pointget(Request $request)
     {
         Auth::user()->point += $request->user_point;
+        Auth::user()->alert_level = "NULL";
         Auth::user()->update();
         Post::find($request->id)->delete();
 
@@ -101,12 +124,15 @@ class ActionController extends Controller
     public function pointless(Request $request)
     {
         Auth::user()->point -= $request->death_point;
+        Auth::user()->alert_level = "NULL";
         Auth::user()->update();
         Post::find($request->id)->delete();
 
         return redirect('admin');
     }
 
+
+    // 褒美一覧
     public function reward() 
     {
         $rewards = Reward::all();
@@ -121,6 +147,7 @@ class ActionController extends Controller
         $reward = new Reward;
         $form = $request->all();
         $reward->fill($form);
+
         $reward->save();
 
         session()->flash('msg_success', 'ご褒美内容が作成されました');
@@ -153,10 +180,11 @@ class ActionController extends Controller
 
     public function rewardupdate(Request $request)
     {
+        dd($request->id);
         $reward = Reward::find($request->id);
         $form = $request->all();
-        $reward->fill($form)->save();
-        dd($request->all());
+        $reward->fill($form);
+        $reward->save();
 
         return redirect('admin/reward');
     }
@@ -170,6 +198,32 @@ class ActionController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    //  マイページの処理
+    public function mypage() 
+    {
+        $rewards = Rewardrecord::where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->get();
+        
+        foreach($rewards as $reward) {
+            if($reward->getRemaindingDays() == 0) {
+                $reward->delete();
+                Auth::user()->alert_level = "NULL";
+                Auth::user()->update();
+            session()->flash('msg_success', '有効期限が過ぎました');
+            }
+        }
+
+        $notices = Notice::all();
+
+
+        $rewards = Rewardrecord::where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('admin.mypage', ['rewards' => $rewards, 'notices' => $notices]);
+    }
+
     public function mypageedit(Request $request)
     {
         return view('admin.mypageedit');
@@ -181,16 +235,20 @@ class ActionController extends Controller
         $form = $request->all();
 
         $profile->purpose = $request->purpose;
-
+        // dd$formで確認できてきているのかdd($form['image'])
         if(isset($form['image'])) {
             $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+            // ddが通ってないdd($path)
             $profile->image_profile = Storage::disk('s3')->url($path);
         } elseif ($request->file('image')) {
-            $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+            $path = Storage::disk('s3')->putFile('/', $form['image'], 'public');
             $profile->image_profile = Storage::disk('s3')->url($path);
         } else {
             $profile->image_profile = $request->image_profile;
         }
+
+        unset($form['_token']);
+        unset($form['image']);
 
         $profile->fill($form)->save();
 
@@ -198,6 +256,8 @@ class ActionController extends Controller
         return redirect('admin/mypage');
     }
 
+
+    // ユーザー一覧
     public function users() 
     {
         $users = User::all();
@@ -205,11 +265,24 @@ class ActionController extends Controller
         return view('admin.users', ['users' => $users]);
     }
 
-    public function usershow()
+    public function usershow(Request $request)
     {
-        $users = User::all();
+        // ユーザー個別の情報を表示
+        // User_idが渡されていないので、、
+        $users = User::find($request->id);
+        $posts = Post::where('user_id', $users->id)
+        ->orderBy('created_at', 'desc') 
+            ->get();
 
-        return view('admin.usershow', ['users' => $users]);
+        return view('admin.usershow', ['posts' => $posts, 'users' => $users]);
+    }
+
+    public function delete(Request $request)
+    {
+        $notice = Notice::all();
+        $notice->delete();   
+
+        return redirect('admin.mypage');
     }
 
 

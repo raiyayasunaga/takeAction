@@ -23,6 +23,8 @@ Route::prefix('admin')->group(function () {
         return view('admin.reward_create');
     })->name('admin.reward_create');
     Route::get('mypageedit', 'ActionController@mypageedit');
+    Route::post('mypagecreate', 'ActionController@mypagecreate');
+
     Route::post('pointget', 'ActionController@pointget');
     Route::post('pointless', 'ActionController@pointless');
 
@@ -36,7 +38,9 @@ Route::prefix('admin')->group(function () {
         return view('admin.reward_edit', ['reward_form' => $rewards]);
     })->name('reward.edit');
     Route::post('reward_update', 'ActionController@rewardupdate');
-    Route::post('mypagecreate', 'ActionController@mypagecreate');
+
+    // 履歴データを消去
+    Route::post('delete', 'ActionController@delete')->name('notices.delete');
 
     Route::get('test', function() {
         return view('admin.test');

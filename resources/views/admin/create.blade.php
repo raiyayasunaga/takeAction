@@ -4,7 +4,8 @@
 
 @section('content')
   <div class="container">
-  <form action="{{ route('admin.store') }}" onSubmit="return" method="post" enctype="multipart/form-data">
+  <!-- autocomplete="off"で予測入力が消せる！！ -->
+  <form action="{{ route('admin.store') }}" onSubmit="return" method="post" enctype="multipart/form-data" autocomplete="off">
     @if (count($errors) > 0)
       <ul>
           @foreach($errors->all() as $e)
@@ -22,13 +23,18 @@
           <div class="col-md-4">
             <h4>期間</h4>
             始める日
-            <input type="text" class="form-control" name="period" id="start_date" value="{{ old('period') }}">
+            <div>
+            <datepicker-component name="start_date" defaultdate="{{ \Carbon\Carbon::now()->addDay("0")->format("Y/m/d") }}"/>
+            </div>
             終わりの日
-            <input type="text" class="form-control" name="period" id="end_date" value="{{ old('period') }}">
+            <div>
+            <datepicker-component name="end_date" defaultdate="{{ \Carbon\Carbon::now()->addDay("1")->format("Y/m/d") }}"/>
+            </div>
             <!-- コントローラーに日付の計算で組む今日＋ userからもらった数字Carbonを利用 -->
           </div>
           <div class="col-md-4">
             <h4>報酬設定</h4>
+            <br>
               <select name="user_point" id="" class="form-control">
                 <option value="">選択して下さい</option>
                 @for ($i = 1; $i <= 100; $i++)
@@ -45,6 +51,7 @@
           </div>
           <div class="col-md-4">
             <h4>減点設定</h4>
+            <br>
             <select name="death_point" id="" class="form-control">
               <option value="">選択して下さい</option>
               @for ($i = 1; $i <= 100; $i++)
@@ -54,6 +61,13 @@
               @endfor
             </select>
           </div>
+      </div>
+      <div class="row">
+      <h3>通知設定</h3>
+        <select name="" id="">
+          <option value="">通知する</option>
+          <option value="">通知しない</option>
+        </select>
       </div>
       @csrf
       <input style="margin-top: 250px;" type="submit" value="新規追加">
@@ -75,9 +89,5 @@ window.onload = function()
     }
   }
 }
-    $(function(){
-      $("#start_date").datepicker();
-      $("#end_date").datepicker();
-  });
 </script>
 @endsection

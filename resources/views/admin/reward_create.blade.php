@@ -15,14 +15,14 @@
     <h3>ご褒美作成</h3>
       <div class="row">
         <div class="col-md-12">
-          <input type="text" name="title" class="form-control" placeholder="できるだけ細かく記述して下さい" value="">
+          <input type="text" name="title" class="form-control" placeholder="できるだけ細かく記述して下さい" value="{{ old('title') }}">
         </div>
       </div>
       <div class="row my-5">
         <div class="col-md-6">
           <h4>報酬設定</h4>
-            <select name="reward_point" id="" class="form-control">
-              <option value="">----</option>
+            <select name="reward_point" id="" class="form-control" value="{{ old('reward_point') }}">
+              <option value="{{ old('reward_point') }}">----</option>
               @for ($i = 1; $i <= 100; $i++)
                 <option value="{{ $i }}">
                 {{ $i . 'point' }}
