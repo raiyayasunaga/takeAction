@@ -76,13 +76,9 @@ class Post extends Model
     return $day . '日';
   }
 
-//  24時間＝1にするメソッド
-  public function rozic()
-  {
-    $diff = ($this->start_date)->diffInHours($this->end_date);
-    $hours = $diff->hours;
-    $hours = $hours + ($diff->$day*24);
-    return $hours;
-  }
+  public function str_random()
+    {
+        return Str::random(2);
+    }
 
 }

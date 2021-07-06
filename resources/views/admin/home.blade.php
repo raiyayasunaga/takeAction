@@ -25,10 +25,10 @@
       <table class="table">
         <thead>
           <tr>
-            <th width="50%">クエスト一覧</th>
+            <th width="40%">クエスト一覧</th>
             <th width="20%">期限</th>
-            <th width="10%">getポイント</th>
-            <th width="20%">マイナスポイント</th>
+            <th width="20%">ポイント</th>
+            <th width="20%">-ポイント</th>
           </tr>
         </thead>
         <tbody>
@@ -39,11 +39,13 @@
                 <button type="submit" class="btn btn-primary p-1" >{{ $post->title }}</button>
                 @csrf
                   <input type="hidden" name="user_point" value="{{$post->user_point}}">
+                  <input type="hidden" name="alert_level" value="{{ Auth::user()->alert_level }}">
               </form>
               <form method="post" action="{{ action('ActionController@pointless', ['id' => $post->id]) }}" onSubmit="return giveup()">
                 <button type="submit" class="btn btn-outline-danger p-0">諦める</button>
                 @csrf 
                   <input type="hidden" name="death_point" value="{{ $post->death_point }}">
+                  <input type="hidden" name="alert_level" value="{{ Auth::user()->alert_level }}">
               </form>
             </td>
             

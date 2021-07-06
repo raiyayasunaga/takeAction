@@ -23,7 +23,7 @@
         <thead>
           <tr>
             <th width="80%">タイトル</th>
-            <th width="10%">有効期限</th>
+            <th width="20%">有効期限</th>
           </tr>
         </thead>
         <tbody>

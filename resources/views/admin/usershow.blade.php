@@ -12,8 +12,8 @@
             <tr>
               <th width="30%">投稿名</th>
               <th width="30%">期限</th>
-              <th width="10%">getポイント</th>
-              <th width="10%">マイナスポイント</th>
+              <th width="20%">ポイント</th>
+              <th width="20%">-ポイント</th>
             </tr>
           </thead>
         @foreach($posts as $post)

@@ -5,7 +5,7 @@
 @section('content')
   <div class="container">
   <!-- autocomplete="off"で予測入力が消せる！！ -->
-  <form action="{{ route('admin.store') }}" onSubmit="return" method="post" enctype="multipart/form-data" autocomplete="off">
+  <form action="{{ route('admin.store') }}" onSubmit="return check()" method="post" enctype="multipart/form-data" autocomplete="off">
     @if (count($errors) > 0)
       <ul>
           @foreach($errors->all() as $e)
@@ -35,6 +35,10 @@
           <div class="col-md-4">
             <h4>報酬設定</h4>
             <br>
+            <div>
+              <input class="btn btn-primary" type="button" name="user_point" value="ボタン" id="test">
+              <div name="user_point" value="" id="view"></div>
+            </div>
               <select name="user_point" id="" class="form-control">
                 <option value="">選択して下さい</option>
                 @for ($i = 1; $i <= 100; $i++)
@@ -50,16 +54,18 @@
               @endif
           </div>
           <div class="col-md-4">
-            <h4>減点設定</h4>
+            <h4>減点設定or失敗したらする事</h4>
             <br>
             <select name="death_point" id="" class="form-control">
               <option value="">選択して下さい</option>
-              @for ($i = 1; $i <= 100; $i++)
+              @for ($i = 50; $i <= 100; $i++)
                 <option value="{{ $i }}"
                   @if(old('death_point') == $i) select @endif>{{'-'. $i . 'point'}}
                 </option>
               @endfor
             </select>
+            <h5 class="mt-3">代償罰</h5>
+            <input class="form-control" type="text" name="" value="">
           </div>
       </div>
       <div class="row">
@@ -77,17 +83,21 @@
 
 @section('js')
 <script>
-window.onload = function()
-{
-  function recheck(){
-    if(window.confirm('本当に実行してもよろしいですか？. '<br>' .＊消去編集できません')){ // 確認ダイアログを表示
-        return true; // 「OK」時は送信を実行
-    }
-    else{ // 「キャンセル」時の処理
-    // 警告ダイアログを表示
-        return false; // 送信を中止
-    }
+  $(function() {
+    $("#test").click(function() {
+    let random = Math.floor( Math.random() * 90 ) + 10;
+      $("#view").append(random);
+    });
+  });
+  function check(){
+  if(window.confirm('本当に実行しますか？※一度作成したら編集できません')){ // 確認ダイアログを表示
+      return true; // 「OK」時は送信を実行
+  }
+  else{ // 「キャンセル」時の処理
+  // 警告ダイアログを表示
+      return false; // 送信を中止
   }
 }
+
 </script>
 @endsection

@@ -40,7 +40,7 @@
             appId: "43e804fb-c314-4419-be43-36b84e63ec73",
             });
         });
-        </script>
+    </script>
         @yield('style')
     </head>
     <body>
@@ -51,14 +51,34 @@
                   <a class="navbar-brand" href="{{ url('admin') }}">
                       <img src="{{ Auth::user()->image_profile }}" height="50px;">
                   </a>
+                   <!-- Left Side Of Navbar -->
+                   <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown">
+                                  <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                      {{ Auth::user()->name }} <span class="caret"></span>
+                                  </a>
+
+                                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                      <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                      document.getElementById('logout-form').submit();">
+                                          {{ __('Logout') }}
+                                      </a>
+
+                                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                          @csrf
+                                      </form>
+                                  </div>
+                              </li>
+                      </ul>
                     <ul class="navbar-nav ml-auto">
                             <nav class="navMenu">
                                 <ul>
-                                    <li><a href="{{ route('admin.mypage') }}" >マイページ</a></li>
-                                    <li><a href="{{ route('admin.create') }}">ムチを作成</a></li>
-                                    <li><a href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
-                                    <li><a href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
-                                    <li><a href="{{ route('admin.users') }}">利用しているユーザー</a></li>
+                                    <li><a class="nav-font" href="{{ route('admin.mypage') }}" >マイページ</a></li>
+                                    <li><a class="nav-font" href="{{ route('admin.create') }}">ムチを作成</a></li>
+                                    <li><a class="nav-font" href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
+                                    <li><a class="nav-font" href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
+                                    <li><a class="nav-font" href="{{ route('admin.users') }}">利用しているユーザー</a></li>
                                 </ul>
                             </nav>
 
@@ -82,26 +102,6 @@
                     @else
 
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <!-- Left Side Of Navbar -->
-                      <ul class="navbar-nav mr-auto">
-                            <li class="nav-item dropdown">
-                                  <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                      {{ Auth::user()->name }} <span class="caret"></span>
-                                  </a>
-
-                                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                      <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                      document.getElementById('logout-form').submit();">
-                                          {{ __('Logout') }}
-                                      </a>
-
-                                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                          @csrf
-                                      </form>
-                                  </div>
-                              </li>
-                      </ul>
 
                       <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">

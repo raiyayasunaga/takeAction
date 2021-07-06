@@ -10,8 +10,8 @@
         <table class="table">
           <thead>
               <tr>
-                  <th width="70%">褒美タイトル</th>
-                  <th width="20%">購入ポイント</th>
+                  <th width="60%">褒美タイトル</th>
+                  <th width="30%">購入ポイント</th>
                   @if(Auth::user()->name == "頼矢")
                   <th width="10%">編集</th>
                   @endif

@@ -4,7 +4,7 @@
 
 @section('content')
   <div class="container">
-    <form action="{{ action('ActionController@rewardcreate') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ action('ActionController@rewardcreate') }}" onSubmit="return recheck()" method="post" enctype="multipart/form-data">
     @if (count($errors) > 0)
       <ul>
         @foreach($errors->all() as $e)
@@ -37,4 +37,17 @@
   </div>
 @endsection
 
-
+@section('js')
+<script>
+  function recheck() 
+  {
+    if(window.confirm('本当に実行してもよろしいですか？')){ // 確認ダイアログを表示
+      return true; // 「OK」時は送信を実行
+  }
+  else{ // 「キャンセル」時の処理
+  // 警告ダイアログを表示
+      return false; // 送信を中止
+  }
+  }
+</script>
+@endsection

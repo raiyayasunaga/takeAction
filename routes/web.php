@@ -33,9 +33,9 @@ Route::prefix('admin')->group(function () {
 
     // コントローラーに書くの面倒からここに書いた
     Route::get('reward_edit', function(Request $request) {
-        $rewards = Reward::find($request->id);
+        $reward_form = Reward::find($request->id);
 
-        return view('admin.reward_edit', ['reward_form' => $rewards]);
+        return view('admin.reward_edit', ['reward_form' => $reward_form]);
     })->name('reward.edit');
     Route::post('reward_update', 'ActionController@rewardupdate');
 

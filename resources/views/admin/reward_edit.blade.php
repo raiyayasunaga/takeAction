@@ -22,22 +22,17 @@
         <div class="col-md-6">
           <h4>報酬設定</h4>
             <select name="reward_point" id="" class="form-control">
-              <option value=""></option>
+              <option value="{{ $reward_form->reward_point }}">{{ $reward_form->reward_point }}point</option>
               @for ($i = 1; $i <= 100; $i++)
-                @if ({{ $reward_form->reward_point }} == $i) 
-                  <option value="" selected>
-                  {{ $reward_form->reward_point }}point
-                  </option>
-                @else 
                   <option value="{{ $i }}">
                   {{ $i . 'point' }}
                   </option>
-                @endif
               @endfor
             </select>
         </div>
       </div>
       @csrf
+      <input type="hidden" name="id" value="{{ $reward_form->id }}" >
       <input type="submit" value="作成する">
     </from>
   </div>

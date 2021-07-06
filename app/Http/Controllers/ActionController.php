@@ -44,6 +44,7 @@ class ActionController extends Controller
                 if($post->getendHours() <= 24 && $post->getendHours() > 12) {
                     Auth::user()->alert_level = "2";
                     Auth::user()->update();
+                session()->flash('msg_success', '24時間切りました');
                 }
                 elseif($post->getendHours() <= 12 && $post->getendHours() > 0) {
                     Auth::user()->alert_level = "3";
@@ -115,6 +116,7 @@ class ActionController extends Controller
         Auth::user()->point += $request->user_point;
         Auth::user()->alert_level = "NULL";
         Auth::user()->update();
+
         Post::find($request->id)->delete();
 
         session()->flash('msg_success', 'クエスト完了しました');
@@ -180,12 +182,12 @@ class ActionController extends Controller
 
     public function rewardupdate(Request $request)
     {
-        dd($request->id);
         $reward = Reward::find($request->id);
         $form = $request->all();
         $reward->fill($form);
         $reward->save();
 
+        session()->flash('msg_seccess', 'ご褒美内容を編集しました');
         return redirect('admin/reward');
     }
 
