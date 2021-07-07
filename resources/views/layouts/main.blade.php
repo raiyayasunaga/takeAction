@@ -79,6 +79,7 @@
                                     <li><a class="nav-font" href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.users') }}">利用しているユーザー</a></li>
+                                    <li><a class="nav-font" href="http://127.0.0.1:8000/home">チャット可能ユーザー</a></li>
                                 </ul>
                             </nav>
 
@@ -110,6 +111,7 @@
                             <li><a class="btn btn-success" href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.users') }}">利用しているユーザー</a></li>
+                            <li><a class="btn btn-success" href="http://127.0.0.1:8000/home">チャット可能なユーザー</a></li>
                         </ul>
                           @endguest
                   </div>

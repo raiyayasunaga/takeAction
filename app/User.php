@@ -56,4 +56,9 @@ class User extends Authenticatable
         return $this->hasMany('App\VerifiedPhoto');
     }
 
+    // メッセージ
+    public function messages()
+    {
+    return $this->hasMany('App\Message');
+    }
 }

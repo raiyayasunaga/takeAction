@@ -1913,12 +1913,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  data: function data() {
+    return {
+      text: "",
+      messages: []
+    };
+  },
+  computed: {
+    textExists: function textExists() {
+      return this.text.length > 0;
+    }
+  },
+  created: function created() {
+    var _this = this;
+
+    this.fetchMessages();
+    Echo["private"]("chat").listen("MessageSent", function (e) {
+      _this.messages.push({
+        message: e.message.message,
+        user: e.user
+      });
+    });
+  },
+  methods: {
+    fetchMessages: function fetchMessages() {
+      var _this2 = this;
+
+      axios.get("/messages").then(function (response) {
+        _this2.messages = response.data;
+      });
+    },
+    postMessage: function postMessage(message) {
+      var _this3 = this;
+
+      axios.post("/messages", {
+        message: this.text
+      }).then(function (response) {
+        _this3.text = "";
+      });
+    }
   }
 });
 
@@ -37671,32 +37705,46 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
-          ])
+  return _c("div", [
+    _c(
+      "ul",
+      _vm._l(_vm.messages, function(message, key) {
+        return _c("li", { key: key }, [
+          _c("strong", [_vm._v(_vm._s(message.user.name))]),
+          _vm._v("\n            " + _vm._s(message.message) + "\n        ")
         ])
-      ])
-    ])
-  }
-]
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.text,
+          expression: "text"
+        }
+      ],
+      domProps: { value: _vm.text },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.text = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "button",
+      { attrs: { disabled: !_vm.textExists }, on: { click: _vm.postMessage } },
+      [_vm._v("送信")]
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

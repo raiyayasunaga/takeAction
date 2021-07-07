@@ -15,6 +15,7 @@ use App\Reward;
 use App\Post;
 
 Route::prefix('admin')->group(function () {
+    // URLはここから読み込まれる
     Route::get('mypage', 'ActionController@mypage')->name('admin.mypage');
     Route::get('reward', 'ActionController@reward')->name('admin.reward');
     Route::get('users', 'ActionController@users')->name('admin.users');
@@ -54,12 +55,15 @@ Route::prefix('admin')->group(function () {
     // 投稿履歴
     Route::get('verified_photo', 'ActionController@verified')->name('verified.photo');
 
-
     // 色々試すところ
     Route::get('test', function() {
         return view('admin.test');
     });
 });
+
+//メッセージ送信機能 
+Route::get('/chat/{recieve}' , 'ChatController@index')->name('chat');
+Route::post('/chat/send' , 'ChatController@store')->name('chatSend');
 
 Route::get('web_push/create', 'WebPushController@create');
 Route::post('web_push', 'WebPushController@store');

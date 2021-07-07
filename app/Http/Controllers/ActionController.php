@@ -382,7 +382,6 @@ class ActionController extends Controller
 
 
 
-
 // 以下のコードはresourceで定義された必要のないコードなので、、
 
     /**

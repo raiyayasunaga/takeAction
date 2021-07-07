@@ -1,85 +1,115 @@
-@extends('layouts.main')
-
-@section('title', 'チャット機能')
-
-@section('style')
-<style>
-.chat-container {
-  width: 100%;
-  height: 100%;
-}
-
-.chat-card {
-  height: 67vh;
-  overflow: auto;
-}
-
-.chat-area {
-  width: 70%;
-}
-
-.comment-container {
-  position: fixed;
-  bottom: 20px;
-  text-align: center;
-  width: 100%;
-}
-
-.comment-area {
-  width: 70%;
-}
-
-.comment-btn {
-  margin: 0px 10px;
-}
-
-.comment-body {
-  padding: 5px 30px 20px 30px;
-}
-
-.comment-body:hover {
-  background-color: #dfdfdf;
-}
-
-.comment-body-user {
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.comment-body-time {
-  font-size: 10px;
-  margin-top: 10px;
-  margin-left: 5px;
-  color: #a0a0a0;
-}
-</style>
-@endsection
-
-
+@extends('layouts.app')
+ 
 @section('content')
-<div class="chat-container row justify-content-center">
-    <div class="chat-area">
-        <div class="card">
-            <div class="card-header">Comment</div>
-            <div class="card-body chat-card">
-
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
         </div>
     </div>
-</div>
-
-<div class="comment-container row justify-content-center">
-    <div class="input-group comment-area">
-        <textarea class="form-control" placeholder="input massage" aria-label="With textarea"></textarea>
-        <button type="input-group-prepend button" class="btn btn-outline-primary comment-btn">Submit</button>
+ 
+    {{--  チャットルーム  --}}
+    <div id="room">
+        @foreach($messages as $key => $message)
+            {{--   送信したメッセージ  --}}
+            @if($message->send == \Illuminate\Support\Facades\Auth::id())
+                <div class="send" style="text-align: right">
+                    <p>{{$message->message}}</p>
+                </div>
+ 
+            @endif
+ 
+            {{--   受信したメッセージ  --}}
+            @if($message->recieve == \Illuminate\Support\Facades\Auth::id())
+                <div class="recieve" style="text-align: left">
+                    <p>{{$message->message}}</p>
+                </div>
+            @endif
+        @endforeach
     </div>
+ 
+    <form>
+        <textarea name="message" style="width:100%"></textarea>
+        <button type="button" id="btn_send">送信</button>
+    </form>
+ 
+    <input type="hidden" name="send" value="{{$param['send']}}">
+    <input type="hidden" name="recieve" value="{{$param['recieve']}}">
+    <input type="hidden" name="login" value="{{\Illuminate\Support\Facades\Auth::id()}}">
+ 
 </div>
+ 
 @endsection
-
-@section('js')
-  <script>
-  
-  </script>
+@section('script')
+    <script type="text/javascript">
+ 
+       //ログを有効にする
+       Pusher.logToConsole = true;
+ 
+       var pusher = new Pusher('[YOUR-APP-KEY]', {
+           cluster  : '[YOUR-CLUSTER]',
+           encrypted: true
+       });
+ 
+       //購読するチャンネルを指定
+       var pusherChannel = pusher.subscribe('chat');
+ 
+       //イベントを受信したら、下記処理
+       pusherChannel.bind('chat_event', function(data) {
+ 
+           let appendText;
+           let login = $('input[name="login"]').val();
+ 
+           if(data.send === login){
+               appendText = '<div class="send" style="text-align:right"><p>' + data.message + '</p></div> ';
+           }else if(data.recieve === login){
+               appendText = '<div class="recieve" style="text-align:left"><p>' + data.message + '</p></div> ';
+           }else{
+               return false;
+           }
+ 
+           // メッセージを表示
+           $("#room").append(appendText);
+ 
+           if(data.recieve === login){
+               // ブラウザへプッシュ通知
+               Push.create("新着メッセージ",
+                   {
+                       body: data.message,
+                       timeout: 8000,
+                       onClick: function () {
+                           window.focus();
+                           this.close();
+                       }
+                   })
+ 
+           }
+ 
+ 
+       });
+ 
+ 
+        $.ajaxSetup({
+            headers : {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content'),
+            }});
+ 
+ 
+        // メッセージ送信
+        $('#btn_send').on('click' , function(){
+            $.ajax({
+                type : 'POST',
+                url : '/chat/send',
+                data : {
+                    message : $('textarea[name="message"]').val(),
+                    send : $('input[name="send"]').val(),
+                    recieve : $('input[name="recieve"]').val(),
+                }
+            }).done(function(result){
+                $('textarea[name="message"]').val('');
+            }).fail(function(result){
+ 
+            });
+        });
+    </script>
+ 
 @endsection
-
-
