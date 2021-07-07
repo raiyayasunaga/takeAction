@@ -16,9 +16,6 @@ class Reward extends Model
         "reward_point" => "required",
     );
     
-    public function user() 
-    {
-        return $this->belongTo('App\User');
-    }
+    
     
 }

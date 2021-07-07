@@ -81,4 +81,9 @@ class Post extends Model
         return Str::random(2);
     }
 
+
+    public function verifies()
+    {
+      return $this->hasMany('App\VerifiedPhoto');
+    }
 }

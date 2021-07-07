@@ -12,6 +12,7 @@
 */
 use Illuminate\Http\Request;
 use App\Reward;
+use App\Post;
 
 Route::prefix('admin')->group(function () {
     Route::get('mypage', 'ActionController@mypage')->name('admin.mypage');
@@ -31,7 +32,7 @@ Route::prefix('admin')->group(function () {
     Route::post('rewardscreate', 'ActionController@rewardcreate');
     Route::post('rewardsget', 'ActionController@rewardsget');
 
-    // コントローラーに書くの面倒からここに書いた
+    // コントローラーに書くの面倒だからここに書いた
     Route::get('reward_edit', function(Request $request) {
         $reward_form = Reward::find($request->id);
 
@@ -42,6 +43,19 @@ Route::prefix('admin')->group(function () {
     // 履歴データを消去
     Route::post('delete', 'ActionController@delete')->name('notices.delete');
 
+    // 証拠履歴、フォーム等ルート
+    Route::get('verify_photo', function(Request $request) {
+        $verify_form = Post::find($request->id);
+
+        return view('admin.verify', ['verify_form' => $verify_form]);
+    })->name('verify.form');
+    Route::post('verifycreate', 'ActionController@verifycreate');
+
+    // 投稿履歴
+    Route::get('verified_photo', 'ActionController@verified')->name('verified.photo');
+
+
+    // 色々試すところ
     Route::get('test', function() {
         return view('admin.test');
     });

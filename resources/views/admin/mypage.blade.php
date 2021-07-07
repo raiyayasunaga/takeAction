@@ -4,18 +4,19 @@
 
 @section('content')
     @foreach($notices as $notice)
-    <div class="modal js-modal">
-        <div class="modal__bg js-modal-close"></div>
-        <div class="modal__content">
-            <p>{{ $notice->who }}さんの目標({{ $notice->popose}})が{{ $notice->action }}されました！</p>
-            <!-- 非同期通信 -->
-            <!-- カラムに人数分のレコードユーザー分できる３人分をデータ渡すto関連ずけintegerカラムA、テーブル場合は通知したかどうか -->
-            <a class="js-modal-close" href="">閉じる</a>
-        </div><!--modal__inner-->
-    </div>
+      <div class="modal js-modal">
+          <div class="modal__bg js-modal-close"></div>
+          <div class="modal__content">
+              <p>{{ $notice->who }}さんの目標({{ $notice->popose}})が{{ $notice->action }}されました！</p>
+              <!-- 非同期通信 -->
+              <!-- カラムに人数分のレコードユーザー分できる３人分をデータ渡すto関連ずけintegerカラムA、テーブル場合は通知したかどうか -->
+              <a class="js-modal-close" href="">閉じる</a>
+          </div><!--modal__inner-->
+      </div>
     @endforeach
   <div class="container">
     <h3 class="mb-5"><a href="mypageedit">マイページの設定</a></h3>
+    <h3><a href="{{ route('verified.photo') }}">今までの記録一覧</a></h3>
     <button class="demo btn btn-primary">ローカルストレージ消去</button>
     <div class="row mt-5">
     <h3>購入履歴</h3>

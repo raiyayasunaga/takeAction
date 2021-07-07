@@ -9,6 +9,8 @@ use App\Post;
 use App\Reward;
 use App\Rewardrecord;
 use App\Notice;
+use App\VerifiedPhoto;
+
 use Carbon\Carbon;
 use Storage;
 use Auth;
@@ -27,12 +29,16 @@ class ActionController extends Controller
     {
         // 降順orderByで
 
+        $posts = User::find('user_id');
+        Auth::user()->posts;
+
+        // $posts = Post::where('user_id', Auth::id())
+        // ->orderBy('created_at', 'desc')
+        // ->get();上野と何が違うのか、、
+
         // バッチcronで自動的に消去してくれる
-        $posts = Post::where('user_id', Auth::id())
-        ->orderBy('created_at', 'desc') 
-            ->get();
             
-        foreach($posts as $post) {
+        foreach(Auth::user()->posts as $post) {
             if($post->getendHours() == 0) {
                 Auth::user()->point -= $post->death_point;
                 Auth::user()->alert_level = "";
@@ -44,7 +50,7 @@ class ActionController extends Controller
                 if($post->getendHours() <= 24 && $post->getendHours() > 12) {
                     Auth::user()->alert_level = "2";
                     Auth::user()->update();
-                session()->flash('msg_success', '24時間切りました');
+                session()->flash('msg_success', '投稿の期限が24時間切りました');
                 }
                 elseif($post->getendHours() <= 12 && $post->getendHours() > 0) {
                     Auth::user()->alert_level = "3";
@@ -56,9 +62,9 @@ class ActionController extends Controller
                 Auth::user()->update();
             }
         }
-        $posts = Post::where('user_id', Auth::id())
-        ->orderBy('created_at', 'desc') 
-            ->get();
+        $posts = User::find('user_id');
+        Auth::user()->posts;
+
 
         return view('admin.home', ['posts' => $posts]);
     }
@@ -286,6 +292,83 @@ class ActionController extends Controller
 
         return redirect('admin.mypage');
     }
+
+
+    // 写真で確認して記録する
+    public function verifycreate(Request $request)
+    {
+        // エラーが起こる原因は大体idを持って来れているのかどうかで決まる。
+            Auth::user()->point += $request->user_point;
+            Auth::user()->alert_level = "NULL";
+            Auth::user()->update();
+
+            Post::find($request->id)->delete();
+
+            $verify = new VerifiedPhoto;
+            $verify->photo_id = Auth::id();
+            $verify->photo_title = $request->photo_title;
+            $form = $request->all();
+
+            // 商品情報の保存
+            if(isset($form['image'])) {
+                $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+                // ddが通ってないdd($path)
+                $verify->image_path = Storage::disk('s3')->url($path);
+            } else {
+                $verify->image_path = $request->image_path;
+            }
+
+            unset($form['_token']);
+            unset($form['image']);
+
+            $verify->fill($form)->save();
+
+            session()->flash('msg_success', 'クエストが完了しました！');
+            return redirect('admin');
+    }
+
+    public function verified()
+    {
+        $verified = verifiedPhoto::where('photo_id', Auth::id())->get();
+        
+        return view('admin.verified_show', ['verified_photos' => $verified]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

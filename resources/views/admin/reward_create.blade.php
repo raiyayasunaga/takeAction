@@ -21,18 +21,21 @@
       <div class="row my-5">
         <div class="col-md-6">
           <h4>報酬設定</h4>
-            <select name="reward_point" id="" class="form-control" value="{{ old('reward_point') }}">
-              <option value="{{ old('reward_point') }}">----</option>
-              @for ($i = 1; $i <= 100; $i++)
-                <option value="{{ $i }}">
-                {{ $i . 'point' }}
+            <input type="text" class="form-control" name="reward_point" placeholder="数式のみ" id="" vlaue="">
+        </div>
+        <div class="col-md-3">
+          <h4>有効期限の設定</h4>
+          <select class="form-control" name="" id="">
+              @for ($i = 1; $i <= 24; $i++)
+                <option value="{{ $i }}"
+                  >{{ $i . '時間'}}
                 </option>
               @endfor
-            </select>
+          </select>
         </div>
       </div>
       @csrf
-      <input type="submit" value="作成する">
+      <input class="btn btn-success" type="submit" value="作成する">
     </form>
   </div>
 @endsection
@@ -43,11 +46,11 @@
   {
     if(window.confirm('本当に実行してもよろしいですか？')){ // 確認ダイアログを表示
       return true; // 「OK」時は送信を実行
-  }
-  else{ // 「キャンセル」時の処理
-  // 警告ダイアログを表示
-      return false; // 送信を中止
-  }
+    }
+    else{ // 「キャンセル」時の処理
+    // 警告ダイアログを表示
+        return false; // 送信を中止
+    }
   }
 </script>
 @endsection

@@ -39,19 +39,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function post()
+    // hasMany()配列→複数
+    // belongTo()単数
+    public function posts()
     {
         return $this->hasMany('App\Post');
     }
 
-    public function reward()
-    {
-        return $this->hasMany('App\Reward');
-    }
-
-    public function rewardrecord()
+    public function rewardrecords()
     {
         return $this->hasMany('App\Rewardrecord');
+    }
+
+    public function photos()
+    {
+        return $this->hasMany('App\VerifiedPhoto');
     }
 
 }

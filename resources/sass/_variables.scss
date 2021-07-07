@@ -31,3 +31,72 @@ $cyan: #6cb2eb;
 }
 
 
+@mixin navMenu() {
+  position: fixed;
+  z-index: 12;
+  top: 0;
+  left: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: none;
+} 
+
+@mixin navMenu-ul() {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+@mixin navMenu-li {
+  font-size: 24px;
+  list-style-type: none;
+  width: 100%;
+  padding-bottom: 0px;
+}
+
+@mixin navMenu-a {
+  display: block;
+  color: #fff;
+  padding: 15px 0;
+  font-weight: bold;
+  font-size: 25px;
+  border-radius: 30px;
+  margin: 10px 60px;
+  border: 1px solid #fff;
+}
+
+@mixin hamburgar {
+  position: fixed;
+  right:18px;
+  top: 3px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  z-index: 13;
+  display: block;
+}
+
+@mixin hamburgar-span {
+  display: block;
+  position: absolute;
+  width: 35px;
+  border-bottom: solid 4px #C1C1C1;
+  -webkit-transition: .35s ease-in-out;
+  -moz-transition: .35s ease-in-out;
+  transition: .35s ease-in-out;
+  left: 6px;
+}
+
+@mixin hamburgar-active-span-nth {
+  top: 18px;
+  left: 6px;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  border-bottom: solid 3px #C1C1C1;
+}

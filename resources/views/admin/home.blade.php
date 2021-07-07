@@ -32,15 +32,11 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($posts as $post)
+          @foreach(Auth::user()->posts as $post)
           <tr>
             <td>
-              <form method="post" action="{{ action('ActionController@pointget', ['id' => $post->id]) }}" onSubmit="return check()">
-                <button type="submit" class="btn btn-primary p-1" >{{ $post->title }}</button>
-                @csrf
-                  <input type="hidden" name="user_point" value="{{$post->user_point}}">
-                  <input type="hidden" name="alert_level" value="{{ Auth::user()->alert_level }}">
-              </form>
+              <a class="btn btn-primary p-1" href="{{ route('verify.form', ['id' => $post->id]) }}">{{ $post->title }}
+              </a>
               <form method="post" action="{{ action('ActionController@pointless', ['id' => $post->id]) }}" onSubmit="return giveup()">
                 <button type="submit" class="btn btn-outline-danger p-0">諦める</button>
                 @csrf 
