@@ -28,6 +28,7 @@
     "dependencies": {
         "laravel-echo": "^1.11.0",
         "pusher-js": "^7.0.3",
+        "vue-notification-bell": "^0.9.8",
         "vuejs-datepicker": "^1.6.2"
     }
 }

@@ -23,7 +23,9 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 
-        
+        <!-- 通知件数表示vueライブラリー -->
+        <script src="https://cdn.jsdelivr.net/npm/vue-notification-bell@0.8.14/dist/NotificationBell.umd.min.js"></script>
+
         <!-- フラッシュメッセージを追加する時に必要なscript -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -107,7 +109,7 @@
                       <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
                             <li><a class="btn btn-success" href="{{ route('admin.mypage') }}" >マイページ</a></li>
-                            <li><a class="btn btn-success" href="{{ route('admin.create') }}">ムチを作成</a></li>
+                            <li><a class="btn btn-success" href="{{ route('admin.create') }}">課題を作成</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.users') }}">利用しているユーザー</a></li>
@@ -121,7 +123,8 @@
                 @yield('content')
             </main>
         </div>
-
+        <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
         @yield('js')
         <script>
             @if (session('msg_success'))

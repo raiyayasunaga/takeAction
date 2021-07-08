@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
-@section('title', '作成画面')
+@section('title', '公開画面')
 
 @section('content')
   <div class="container">
   <!-- autocomplete="off"で予測入力が消せる！！ -->
-  <form action="{{ route('admin.store') }}" onSubmit="return check()" method="post" enctype="multipart/form-data" autocomplete="off">
+  <form action="{{ action('ActionController@runpublic') }}" onSubmit="return check" method="post" enctype="multipart/form-data" autocomplete="off">
     @if (count($errors) > 0)
       <ul>
           @foreach($errors->all() as $e)
@@ -15,8 +15,8 @@
     @endif
     <div class="row">
         <div class="col">
-          <h2>課題作成画面</h2>
-            <input type="text" name="title" class="form-control" placeholder="例：1日7時間勉強する！" value="{{ old('title') }}">
+          <h2>課題公開する画面</h2>
+            <input type="text" name="title" class="form-control" placeholder="例：1日7時間勉強する！" value="{{ $plan_form->title }}">
         </div>
     </div>
     <div class="row my-3">
@@ -35,15 +35,11 @@
           <div class="col-md-4">
             <h4>報酬設定</h4>
             <br>
-            <div>
-              <input class="btn btn-primary" type="button" name="user_point" value="ボタン" id="test">
-              <div name="user_point" value="" id="view"></div>
-            </div>
               <select name="user_point" id="" class="form-control">
                 <option value="">選択して下さい</option>
                 @for ($i = 1; $i <= 100; $i++)
                   <option value="{{ $i }}"
-                    @if(old('user_point') == $i) select @endif>{{ $i . 'point'}}
+                    >{{ $i . 'point'}}
                   </option>
                 @endfor
               </select>
@@ -60,7 +56,7 @@
               <option value="">選択して下さい</option>
               @for ($i = 50; $i <= 100; $i++)
                 <option value="{{ $i }}"
-                  @if(old('death_point') == $i) select @endif>{{'-'. $i . 'point'}}
+                  select>{{'-'. $i . 'point'}}
                 </option>
               @endfor
             </select>
@@ -68,18 +64,10 @@
             <input class="form-control" type="text" name="" value="">
           </div>
       </div>
-
-      <h3>公開設定</h3>
-      <div class="row">
-          <div class="col-3">
-            <select name="public" id="" class="form-control">
-              <option value="0">まだ開始しない</option>
-              <option value="1">もう開始する</option>
-            </select>
-          </div>
-      </div>
       @csrf
-      <input style="margin-top: 250px;" type="submit" value="新規追加">
+      <input type="hidden" name="public" value="1">
+      <input type="hidden" name="id" value="{{ $plan_form->id }}">
+      <input style="margin-top: 250px;" type="submit" value="公開する">
       </form>
   </div>
 @endsection

@@ -38,28 +38,35 @@ class ActionController extends Controller
 
         // バッチcronで自動的に消去してくれる
             
+        if ($posts == "") {
+            Auth::user()->alert_level = "NULL";
+            Auth::user()->update();
+        }
+
         foreach(Auth::user()->posts as $post) {
-            if($post->getendHours() == 0) {
-                Auth::user()->point -= $post->death_point;
-                Auth::user()->alert_level = "";
-                Auth::user()->update();
-                $post->delete();
-            session()->flash('msg_success', '「'.$post->title . '」' . 'ミッション失敗しました');
-            }
-            elseif($post->getendDays() == 0) {
-                if($post->getendHours() <= 24 && $post->getendHours() > 12) {
-                    Auth::user()->alert_level = "2";
+            if($post->public == 1) {
+                if($post->getendHours() == 0) {
+                    Auth::user()->point -= $post->death_point;
+                    Auth::user()->alert_level = "";
                     Auth::user()->update();
-                session()->flash('msg_success', '投稿の期限が24時間切りました');
+                    $post->delete();
+                session()->flash('msg_success', '「'.$post->title . '」' . 'ミッション失敗しました');
                 }
-                elseif($post->getendHours() <= 12 && $post->getendHours() > 0) {
-                    Auth::user()->alert_level = "3";
+                elseif($post->getendDays() == 0) {
+                    if($post->getendHours() <= 24 && $post->getendHours() > 12) {
+                        Auth::user()->alert_level = "2";
+                        Auth::user()->update();
+                    session()->flash('msg_success', '投稿の期限が24時間切りました');
+                    }
+                    elseif($post->getendHours() <= 12 && $post->getendHours() > 0) {
+                        Auth::user()->alert_level = "3";
+                        Auth::user()->update();
+                    }
+                }
+                elseif($post->getendDays() == 1) {
+                    Auth::user()->alert_level = "1";
                     Auth::user()->update();
                 }
-            }
-            elseif($post->getendDays() == 1) {
-                Auth::user()->alert_level = "1";
-                Auth::user()->update();
             }
         }
         $posts = User::find('user_id');
@@ -83,7 +90,6 @@ class ActionController extends Controller
 
     public function store(Request $request)
     {
-
         $this->validate($request, Post::$rules);
         $post = new Post;
 
@@ -91,9 +97,12 @@ class ActionController extends Controller
         // dd($post->start_date);
         $post->start_date = new Carbon($request->start_date);
         $post->end_date = new Carbon($request->end_date);
-        $post->fill($request->except(['_token', 'period', 'start_date', 'end_date']));
-        $post->user_id = Auth::id();
 
+        $post->fill($request->except(['_token', 'period', 'start_date', 'end_date']));
+        
+        // if分を利用してカラムに入る値を変更したい
+        
+        $post->user_id = Auth::id();
         $post->save(); 
 
         $notice = new Notice;
@@ -104,19 +113,11 @@ class ActionController extends Controller
         
         $notice->save();
 
-        // $message = OneSignal::sendNotificationToAll(
-        //     "Some Message", 
-        //     $url = null, 
-        //     $data = null, 
-        //     $buttons = null, 
-        //     $schedule = null
-        // );
-
         session()->flash('msg_success', '投稿が完了しました');
         return redirect('admin');
     }
 
-    // ポイントクリア、諦めるの処理
+    // ポイントの獲得
     public function pointget(Request $request)
     {
         Auth::user()->point += $request->user_point;
@@ -129,6 +130,7 @@ class ActionController extends Controller
         return redirect('admin');
     }
 
+    // ポイントを失う、諦める処理
     public function pointless(Request $request)
     {
         Auth::user()->point -= $request->death_point;
@@ -139,16 +141,7 @@ class ActionController extends Controller
         return redirect('admin');
     }
 
-
-    // 褒美一覧
-    public function reward() 
-    {
-        $rewards = Reward::all();
-
-        return view('admin.reward', ['rewards' => $rewards]);
-    }
-
-
+    // ご褒美作成処理
     public function rewardcreate(Request $request)
     {
         $this->validate($request, Reward::$rules);
@@ -162,7 +155,19 @@ class ActionController extends Controller
         return redirect('admin/reward');
     }
 
+    // ご褒美の内容を上書きする処理
+    public function rewardupdate(Request $request)
+    {
+        $reward = Reward::find($request->id);
+        $form = $request->all();
+        $reward->fill($form);
+        $reward->save();
 
+        session()->flash('msg_seccess', 'ご褒美内容を編集しました');
+        return redirect('admin/reward');
+    }
+
+    // ポイントでお買い物する時の処理
     public function rewardsget(Request $request)
     {
         $validate_rule = [
@@ -183,17 +188,6 @@ class ActionController extends Controller
         // ユーザーのIDとリワードID購入履歴
 
      ;   session()->flash('msg_success', '購入完了！');
-        return redirect('admin/reward');
-    }
-
-    public function rewardupdate(Request $request)
-    {
-        $reward = Reward::find($request->id);
-        $form = $request->all();
-        $reward->fill($form);
-        $reward->save();
-
-        session()->flash('msg_seccess', 'ご褒美内容を編集しました');
         return redirect('admin/reward');
     }
 
@@ -232,11 +226,7 @@ class ActionController extends Controller
         return view('admin.mypage', ['rewards' => $rewards, 'notices' => $notices]);
     }
 
-    public function mypageedit(Request $request)
-    {
-        return view('admin.mypageedit');
-    }
-
+    // mypageの変更、追加の処理
     public function mypagecreate(Request $request)
     {
         $profile = Auth::user();
@@ -265,14 +255,7 @@ class ActionController extends Controller
     }
 
 
-    // ユーザー一覧
-    public function users() 
-    {
-        $users = User::all();
-
-        return view('admin.users', ['users' => $users]);
-    }
-
+    // ユーザー個別の処理
     public function usershow(Request $request)
     {
         // ユーザー個別の情報を表示
@@ -285,6 +268,8 @@ class ActionController extends Controller
         return view('admin.usershow', ['posts' => $posts, 'users' => $users]);
     }
 
+
+    //投稿履歴を消去するかしないかの処理
     public function delete(Request $request)
     {
         $notice = Notice::all();
@@ -294,7 +279,7 @@ class ActionController extends Controller
     }
 
 
-    // 写真で確認して記録する
+    // 写真で証拠確認して記録する処理
     public function verifycreate(Request $request)
     {
         // エラーが起こる原因は大体idを持って来れているのかどうかで決まる。
@@ -327,12 +312,35 @@ class ActionController extends Controller
             return redirect('admin');
     }
 
+    // 確認が完了した履歴表の処理
     public function verified()
     {
         $verified = verifiedPhoto::where('photo_id', Auth::id())->get();
         
         return view('admin.verified_show', ['verified_photos' => $verified]);
     }
+
+    // 溜めていた投稿を公開する処理
+    public function runpublic(Request $request)
+    {
+        $planning = Post::find($request->id);
+
+        $planning->start_date = new Carbon($request->start_date);
+        $planning->end_date = new Carbon($request->end_date);
+
+        // dd($request->except(['_token', 'start_date', 'end_date']));
+        $planning->fill($request->except(['_token', 'start_date', 'end_date']));
+        $planning->save();
+
+        session()->flash('msg_success', 'うまく公開する事が出来ました！');
+        return redirect('admin');
+    }
+
+
+
+
+
+
 
 
 

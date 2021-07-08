@@ -17,18 +17,20 @@
             </tr>
           </thead>
         @foreach($posts as $post)
-          <tbody>
-            <tr>
-              <td>{{ $post->title }}</td>
-              @if($post->getstart() == 0)
-                <td>{{ $post->getendDays() }}{{ $post->getendHours() }}</td>
-                @elseif($post->getstart() > 0)
-                <td>始まるまで後{{ $post->getstart() }}時間</td>
-              @endif
-              <td>{{ $post->user_point }}point</td>
-              <td>-{{ $post->death_point }}point</td>
-            </tr>
-          </tbody>
+          @if($post->public == 1)
+            <tbody>
+              <tr>
+                <td>{{ $post->title }}</td>
+                @if($post->getstart() == 0)
+                  <td>{{ $post->getendDays() }}{{ $post->getendHours() }}</td>
+                  @elseif($post->getstart() > 0)
+                  <td>始まるまで後{{ $post->getstart() }}時間</td>
+                @endif
+                <td>{{ $post->user_point }}point</td>
+                <td>-{{ $post->death_point }}point</td>
+              </tr>
+            </tbody>
+          @endif
         @endforeach
       </table>
         <div class="col-5">

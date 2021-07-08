@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('image_profile')->nullable();
             $table->string('purpose')->nullable();
             $table->string('alert_level')->nullable();
+            $table->dateTime('last_login_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

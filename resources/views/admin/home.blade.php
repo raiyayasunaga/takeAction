@@ -33,27 +33,29 @@
         </thead>
         <tbody>
           @foreach(Auth::user()->posts as $post)
-          <tr>
-            <td>
-              <a class="btn btn-primary p-1" href="{{ route('verify.form', ['id' => $post->id]) }}">{{ $post->title }}
-              </a>
-              <form method="post" action="{{ action('ActionController@pointless', ['id' => $post->id]) }}" onSubmit="return giveup()">
-                <button type="submit" class="btn btn-outline-danger p-0">諦める</button>
-                @csrf 
-                  <input type="hidden" name="death_point" value="{{ $post->death_point }}">
-                  <input type="hidden" name="alert_level" value="{{ Auth::user()->alert_level }}">
-              </form>
-            </td>
-            
-            <!-- コントローラー側でmthodで残り時間を計算するプログラムを実装する -->
-            @if($post->getstart() == 0)
-            <td>{{ $post->getendDays() }}{{ $post->getendHours() }}</td>
-              @elseif($post->getstart() > 0)
-            <td>始まるまで後{{ $post->getstart() }}時間</td>
+            @if($post->public == 1)
+              <tr>
+                <td>
+                  <a class="btn btn-primary p-1" href="{{ route('verify.form', ['id' => $post->id]) }}">{{ $post->title }}
+                  </a>
+                  <form method="post" action="{{ action('ActionController@pointless', ['id' => $post->id]) }}" onSubmit="return giveup()">
+                    <button type="submit" class="btn btn-outline-danger p-0">諦める</button>
+                    @csrf 
+                      <input type="hidden" name="death_point" value="{{ $post->death_point }}">
+                      <input type="hidden" name="alert_level" value="{{ Auth::user()->alert_level }}">
+                  </form>
+                </td>
+                
+                <!-- コントローラー側でmthodで残り時間を計算するプログラムを実装する -->
+                @if($post->getstart() == 0)
+                <td>{{ $post->getendDays() }}{{ $post->getendHours() }}</td>
+                  @elseif($post->getstart() > 0)
+                <td>始まるまで後{{ $post->getstart() }}時間</td>
+                @endif
+                <td>{{ $post->user_point }}point</td>
+                <td>-{{ $post->death_point }}point</td>
+              </tr>
             @endif
-            <td>{{ $post->user_point }}point</td>
-            <td>-{{ $post->death_point }}point</td>
-          </tr>
           @endforeach
         </tbody>
       </table>

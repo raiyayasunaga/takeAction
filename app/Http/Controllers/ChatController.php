@@ -6,6 +6,7 @@ use App\Mail\SampleNotification;
 use Illuminate\Http\Request;
 use App\Events\ChatMessageRecieved;
 use App\Message;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
  
@@ -36,8 +37,11 @@ class ChatController extends Controller
         });
  
         $messages = $query->get();
+
+        // リレーション使って表現する
+
  
-        return view('admin.chat' , compact('param' , 'messages'));
+        return view('admin.chats.chat' , compact('param' , 'messages'));
     }
  
     /**

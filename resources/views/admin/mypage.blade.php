@@ -16,8 +16,9 @@
     @endforeach
   <div class="container">
     <h3 class="mb-5"><a href="mypageedit">マイページの設定</a></h3>
-    <h3><a href="{{ route('verified.photo') }}">今までの記録一覧</a></h3>
+    <h3><a class="btn btn-danger" href="{{ route('verified.photo') }}">今までの記録一覧</a></h3>
     <button class="demo btn btn-primary">ローカルストレージ消去</button>
+    <a class="btn btn-primary" href="actionplanning">まだ実行していない課題一覧</a>
     <div class="row mt-5">
     <h3>購入履歴</h3>
       <table class="table">

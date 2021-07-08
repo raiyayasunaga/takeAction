@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->date('period')->nullable();
+            $table->integer('public')->nullable();
             $table->integer('user_point');
             $table->integer('death_point');
             $table->timestamps();

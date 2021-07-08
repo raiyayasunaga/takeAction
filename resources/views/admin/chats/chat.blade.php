@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
  
 @section('content')
 <div class="container">
@@ -13,23 +13,33 @@
             {{--   送信したメッセージ  --}}
             @if($message->send == \Illuminate\Support\Facades\Auth::id())
                 <div class="send" style="text-align: right">
-                    <p>{{$message->message}}</p>
+                    <p>投稿者：{{ Auth::user()->name }}</p>
+                    <div class="faceicon">
+                    </div>
+                    <div class="chatting">
+                      <p class="send_message">{{$message->message}}</p>
+                    </div>
                 </div>
  
             @endif
  
-            {{--   受信したメッセージ  --}}
+            {{--   受信したメッセージ  --}} 
             @if($message->recieve == \Illuminate\Support\Facades\Auth::id())
                 <div class="recieve" style="text-align: left">
-                    <p>{{$message->message}}</p>
+                  <p>送る人：</p>
+                  <div class="faceicon">
+                  </div>
+                  <div class="chatting">
+                    <p class="recieve_messege" >{{$message->message}}</p>
+                  </div>
                 </div>
             @endif
         @endforeach
     </div>
  
     <form>
-        <textarea name="message" style="width:100%"></textarea>
-        <button type="button" id="btn_send">送信</button>
+        <textarea name="message" style="width:100%; overflow: hidden;"></textarea>
+        <input class="btn btn-primary" type="submit" id="btn_send" onclick="window.location.reload();" value="送信する">
     </form>
  
     <input type="hidden" name="send" value="{{$param['send']}}">
@@ -39,9 +49,10 @@
 </div>
  
 @endsection
-@section('script')
+
+@section('js')
     <script type="text/javascript">
- 
+      window.onload = function(){
        //ログを有効にする
        Pusher.logToConsole = true;
  
@@ -110,6 +121,7 @@
  
             });
         });
+      };
     </script>
  
 @endsection

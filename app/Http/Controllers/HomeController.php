@@ -26,6 +26,10 @@ class HomeController extends Controller
         // ログイン者以外のユーザを取得する
         $users = User::where('id' ,'<>' , $user->id)->get();
         // チャットユーザ選択画面を表示
-        return view('admin.chatcan' , compact('users'));
+        return view('admin.chats.chatindex' , compact('users'));
+    }
+    public function return()
+    {
+        return redirect('admin.chats.chatindex');
     }
 }

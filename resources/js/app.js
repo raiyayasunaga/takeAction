@@ -3,7 +3,10 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
- 
+
+ import Pusher from "pusher-js"
+
+ window.Pusher = require('pusher-js');
 require('./bootstrap');
 
 import jQuery from 'jquery'

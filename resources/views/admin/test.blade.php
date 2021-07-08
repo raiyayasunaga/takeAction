@@ -1,100 +1,86 @@
 <!DOCTYPE html>
 <html lang="">
-    <head>
+  <head>
 
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script> 
     <script src="odometer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-notification-bell@0.8.14/dist/NotificationBell.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
 
     <style>
-        .odometer {
-          font-size: 40px;
+       body {
+          background: #20262E;
+          padding: 20px;
+          font-family: Helvetica;
+        }
+
+        #app {
+          background: #fff;
+          border-radius: 4px;
+          padding: 20px;
+          transition: all 0.2s;
+        }
+
+        li {
+          margin: 8px 0;
+        }
+
+        h2 {
+          font-weight: bold;
+          margin-bottom: 15px;
+        }
+
+        del {
+          color: rgba(0, 0, 0, 0.3);
         }
     </style>
-    </head>
+  </head>
   <body>
-    <div class="container">
-      <h3>jqueryのdatepickerテスト画面</h3>
-      <input type="text" id="date">
+    <div id="app">
+      <notification-bell
+        :size="100"
+        :count="list.length"
+        upper-limit="50"
+        counter-location="upperRight"
+        counter-style="roundRectangle"
+        counter-background-color="#FF0000"
+        counter-text-color="#FFFFFF"
+        icon-color="#000000"
+        font-size="25px"
+        :animated="true"
+      ></notification-bell>
+      <ul class="list-group">
+        <li class="list-group-item" v-for="(item, index) in list" :key="index"> <button class="btn btn-danger" type="button" @click="deleteItem(index)">削除する</button></li>
+      </ul>
     </div>
-  
-  <h3>数字スロットマシーン</h3>
-  <button type="button" id="spin">SPIN!!</button>
 
-<div class='wrap'>
-
-<table>
-    <tbody>
-      <tr>
-        <td><span class="odometer slot1">9</span></td>
-        <td><span class="odometer slot2">9</span></td>
-        <td><span class="odometer slot3">9</span></td>
-      </tr>
-      <tr>
-        <td><button type="button" id="stop1">STOP</button></td>
-        <td><button type="button" id="stop2">STOP</button></td>
-        <td><button type="button" id="stop3">STOP</button></td>
-      </tr>
-    </tbody>
-  </table>
-
-</div>
     <script>
-    $(function(){
-        $("#date").datepicker({
-          dateFormat: 'yy年mm月dd日',
-        });
-    });
-    var slotID1 = 0;
-var slotID2 = 0;
-var slotID3 = 0;
-
-function loop_slot1() {
-     $('.slot1').html(0);
-     $('.slot1').text(9);
-     slotID1 = setTimeout(loop_slot1, 1950);
- }
-
- function loop_slot2() {
-     $('.slot2').html(0);
-     $('.slot2').text(9);
-     slotID2 = setTimeout(loop_slot2, 1950);
- }
-
- function loop_slot3() {
-     $('.slot3').html(0);
-     $('.slot3').text(9);
-     slotID3 = setTimeout(loop_slot3, 1950);
- }
-
-$('#spin').on('click', function() {
-  loop_slot1();
-  loop_slot2();
-  loop_slot3();
-});
-
-$('#stop1').on('click', function() {
-  clearTimeout(slotID1);
-  var random = Math.floor(Math.random() * 10);
-  $('.slot1').text(random);
-  $('.slot1').html(random);
-});
-
-$('#stop2').on('click', function() {
-  clearTimeout(slotID2);
-  var random = Math.floor(Math.random() * 10);
-  $('.slot2').text(random);
-  $('.slot2').html(random);
-});
-
-$('#stop3').on('click', function() {
-  clearTimeout(slotID3);
-  var random = Math.floor(Math.random() * 10);
-  $('.slot3').text(random);
-  $('.slot3').html(random);
-});
-  </script>
+      const NotificationBell = window['NotificationBell'].default;
+      new Vue({ 
+        el: '#app',
+        components: {
+          'notification-bell':NotificationBell 
+        },
+        data: {
+          list: [
+            {no:1},
+            {no:2},
+            {no:3},
+            {no:4},
+            {no:5},
+          ]
+        },
+        methods: {
+          deleteItem: function(index){
+            this.list.splice(index, 1);
+          }
+        }
+      });
+      
+    </script>
   </body>
 </html>

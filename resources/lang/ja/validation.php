@@ -77,7 +77,7 @@ return [
         'array'   => ':attributeの項目数は、:value個以下でなければなりません。',
     ],
     'max'                  => [
-        'numeric' => ':attributeには、:max以下のポイントを指定してください。',
+        'numeric' => ':attribute、:max以下のポイント足りてません！',
         'file'    => ':attributeには、:max KB以下のファイルを指定してください。',
         'string'  => ':attributeは、:max文字以下にしてください。',
         'array'   => ':attributeの項目は、:max個以下にしてください。',
