@@ -30,7 +30,7 @@ $cyan: #6cb2eb;
   }
 }
 
-
+// ナビメニュー
 @mixin navMenu() {
   position: fixed;
   z-index: 12;
@@ -99,4 +99,40 @@ $cyan: #6cb2eb;
   -moz-transform: rotate(-45deg);
   transform: rotate(-45deg);
   border-bottom: solid 3px #C1C1C1;
+}
+
+
+// 吹き出しの値
+@mixin send {
+  width: 100%;
+  margin: 1.5em 0;
+  overflow: hidden;
+}
+
+@mixin faceicon {
+  float: left;
+    margin-right: -90px;
+    width: 80px;
+}
+
+@mixin send_message {
+  position: relative;
+  display: inline-block;
+  line-height: 90px;
+  padding: 0px 20px;
+  text-align: center;
+  color: #FFF;
+  font-weight: bold;
+  background: #ff8e9d;
+  border-radius: 35px;
+  box-sizing: border-box;
+}
+
+@mixin  send_message_before {
+  content: "";
+    position: absolute;
+    top: 50%;
+    right: -45px;
+    border: 32px solid transparent;
+    border-left: 34px solid #ff8e9d;
 }

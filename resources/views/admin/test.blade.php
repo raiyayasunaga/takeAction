@@ -12,75 +12,34 @@
 
 
     <style>
-       body {
-          background: #20262E;
-          padding: 20px;
-          font-family: Helvetica;
-        }
-
-        #app {
-          background: #fff;
-          border-radius: 4px;
-          padding: 20px;
-          transition: all 0.2s;
-        }
-
-        li {
-          margin: 8px 0;
-        }
-
-        h2 {
-          font-weight: bold;
-          margin-bottom: 15px;
-        }
-
-        del {
-          color: rgba(0, 0, 0, 0.3);
-        }
+  
     </style>
   </head>
   <body>
-    <div id="app">
-      <notification-bell
-        :size="100"
-        :count="list.length"
-        upper-limit="50"
-        counter-location="upperRight"
-        counter-style="roundRectangle"
-        counter-background-color="#FF0000"
-        counter-text-color="#FFFFFF"
-        icon-color="#000000"
-        font-size="25px"
-        :animated="true"
-      ></notification-bell>
-      <ul class="list-group">
-        <li class="list-group-item" v-for="(item, index) in list" :key="index"> <button class="btn btn-danger" type="button" @click="deleteItem(index)">削除する</button></li>
-      </ul>
-    </div>
+  <h1>再クリックでポップアップ表示を解除</h1>
+<div class="gallery"><img src="/img/chihiro042.jpg" width="300"></div>
+<div id="largeImg" style="display: none;"><img width="800" src="/img/chihiro042.jpg"></div>
+<script type="text/javascript">
+$('.gallery img').click(function(e) {
+    $('#back-curtain')
+        .css({
+            'width' : $(window).width(),    // ウィンドウ幅
+            'height': $(window).height()    // 同 高さ
+        })
+        .show();
+    $('#largeImg')
+        .css({
+            'display': 'block',
+            'position': 'absolute',
+            'left'    : Math.floor(($(window).width() - 800) / 2) + 'px',
+            'top'     : $(window).scrollTop() + 30 + 'px'
+        })
+        .fadeIn();
+});
 
-    <script>
-      const NotificationBell = window['NotificationBell'].default;
-      new Vue({ 
-        el: '#app',
-        components: {
-          'notification-bell':NotificationBell 
-        },
-        data: {
-          list: [
-            {no:1},
-            {no:2},
-            {no:3},
-            {no:4},
-            {no:5},
-          ]
-        },
-        methods: {
-          deleteItem: function(index){
-            this.list.splice(index, 1);
-          }
-        }
-      });
-      
-    </script>
+$('#back-curtain, #largeImg').click(function() {
+    $('#largeImg').fadeOut('slow', function() {$('#back-curtain').hide();});
+});
+</script>
   </body>
 </html>

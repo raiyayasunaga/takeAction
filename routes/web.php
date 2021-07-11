@@ -73,6 +73,8 @@ Route::prefix('admin')->group(function () {
 
         return view('admin.verify', ['verify_form' => $verify_form]);
     })->name('verify.form');
+
+
     Route::post('verifycreate', 'ActionController@verifycreate');
 
     // 投稿履歴
@@ -83,13 +85,13 @@ Route::prefix('admin')->group(function () {
     // 投稿保存、まだ開始していない課題など
     Route::get('actionplanning', function() {
 
-        return view('admin.actionplanning');
+        return view('admin.plannings.actionplanning');
     });
 
     Route::get('planningpublic', function(Request $request) {
        $plan = Post::find($request->id);
 
-        return view('admin.planningpublic', ['plan_form' => $plan]);
+        return view('admin.plannings.planningpublic', ['plan_form' => $plan]);
     })->name('planning.public');
     
     Route::post('runpublic', 'ActionController@runpublic');
@@ -102,13 +104,7 @@ Route::prefix('admin')->group(function () {
 
 });
 
-Route::prefix('announcement')->middleware('auth')->group(function(){
 
-    Route::get('/', 'AnnouncementController@index')->name('announcement.index');
-    Route::get('/list', 'AnnouncementController@list')->name('announcement.list');
-    Route::get('/{announcement}', 'AnnouncementController@show')->name('announcement.show');
-
-});
 
 //メッセージ送信機能 
 Route::get('/chat/{recieve}' , 'ChatController@index')->name('chat');

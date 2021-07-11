@@ -13,7 +13,7 @@ class Reward extends Model
 
     public static $rules = array (
         "title" => "required | string | min: 5 ",
-        "reward_point" => "required",
+        "reward_point" => "integer",
     );
     
     

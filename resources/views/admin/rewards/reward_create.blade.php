@@ -5,12 +5,14 @@
 @section('content')
   <div class="container">
     <form action="{{ action('ActionController@rewardcreate') }}" onSubmit="return recheck()" method="post" enctype="multipart/form-data">
-    @if (count($errors) > 0)
-      <ul>
-        @foreach($errors->all() as $e)
-          <li>{{ $e }}</li>
-        @endforeach
-      </ul>
+    @if ($errors->any())
+      <div class="alert alert-danger">
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+      </div>
     @endif
     <h3>ご褒美作成</h3>
       <div class="row">
@@ -25,7 +27,8 @@
         </div>
         <div class="col-md-3">
           <h4>有効期限の設定</h4>
-          <select class="form-control" name="" id="">
+          <select class="form-control" name="time" id="">
+            <option value="">選択して下さい</option>
               @for ($i = 1; $i <= 24; $i++)
                 <option value="{{ $i }}"
                   >{{ $i . '時間'}}

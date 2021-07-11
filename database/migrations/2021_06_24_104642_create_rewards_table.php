@@ -17,6 +17,7 @@ class CreateRewardsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->integer('reward_point');
+            $table->date('time')->nullable();
             $table->timestamps();
         });
     }

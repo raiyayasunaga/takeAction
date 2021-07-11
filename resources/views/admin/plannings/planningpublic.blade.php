@@ -67,7 +67,7 @@
       @csrf
       <input type="hidden" name="public" value="1">
       <input type="hidden" name="id" value="{{ $plan_form->id }}">
-      <input style="margin-top: 250px;" type="submit" value="公開する">
+      <input class="btn btn-primary" style="margin-top: 250px;" type="submit" value="公開する">
       </form>
   </div>
 @endsection

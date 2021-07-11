@@ -151,7 +151,8 @@ return [
         'period' => '期間',
         'user_point' => "ユーザーポイント",
         'death_point' => 'マイナスポイント',
-        'reward_point' => '褒美ポイント'
+        'reward_point' => '褒美ポイント',
+        'image_path' => '確認画像'
     ],
 
 ];

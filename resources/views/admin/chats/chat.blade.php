@@ -13,7 +13,10 @@
             {{--   送信したメッセージ  --}}
             @if($message->send == \Illuminate\Support\Facades\Auth::id())
                 <div class="send" style="text-align: right">
-                    <p>投稿者：{{ Auth::user()->name }}</p>
+                    <p>
+                        <img src="{{ Auth::user()->image_profile}}" height="40" alt="">
+                        投稿者：{{ Auth::user()->name }}
+                    </p>
                     <div class="faceicon">
                     </div>
                     <div class="chatting">
@@ -26,7 +29,10 @@
             {{--   受信したメッセージ  --}} 
             @if($message->recieve == \Illuminate\Support\Facades\Auth::id())
                 <div class="recieve" style="text-align: left">
-                  <p>送る人：</p>
+                  <p>
+                      <img src="{{ $user->image_profile }}" height="40" alt="">
+                      送る人：{{$user->name}}
+                  </p>
                   <div class="faceicon">
                   </div>
                   <div class="chatting">
@@ -47,6 +53,7 @@
     <input type="hidden" name="login" value="{{\Illuminate\Support\Facades\Auth::id()}}">
  
 </div>
+ 
  
 @endsection
 

@@ -5,17 +5,24 @@
 @section('content')
   <div class="container">
     <h3>クエスト完了確認</h3>
-    <form action="{{ action('ActionController@verifycreate') }}" onSubmit="return check" method="post" enctype="multipart/form-data">
-    クエスト内容
+    <form action="{{ action('ActionController@verifycreate') }}" onSubmit="return check()" method="post" enctype="multipart/form-data">
+    @if (count($errors) > 0)
+      <ul>
+          @foreach($errors->all() as $e)
+              <li>{{ $e }}</li>
+          @endforeach
+      </ul>
+    @endif
+    <h6>クエスト内容</h6>
       <div style="background: white;">
         <h3 >{{ $verify_form->title }}</h3>
       </div>
-      <h3 >{{ $verify_form->user_point }}</h3>
+      <h3 >{{ $verify_form->user_point }}point</h3>
 
-      <div class="row">
+      <div class="row my-3">
           <div class="col">
           <input type="file" name="image" id="image_profile" onchange="previewImage(this);">
-        <img  src="/img" id="Nowimg" style="height: 200px; border: 1px solid black;">
+          <img  src="/img" id="Nowimg" style="height: 200px; border: 1px solid black;">
           </div>
       </div>
       @csrf 

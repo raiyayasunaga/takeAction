@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Storage;
 use Auth;
 use OneSignal;
+use App\Rules\Uppercase;
 
 class ActionController extends Controller
 {
@@ -27,9 +28,9 @@ class ActionController extends Controller
     //  ホームページ
     public function index()
     {
-        // 降順orderByで
 
-        $posts = User::find('user_id');
+        // $reword = User::find('user_id');そもそも記述が違うのでこれはなく整数値で取得する
+        // もし書くのならば、$user = User::find(Auth::id());
         Auth::user()->posts;
 
         // $posts = Post::where('user_id', Auth::id())
@@ -37,11 +38,6 @@ class ActionController extends Controller
         // ->get();上野と何が違うのか、、
 
         // バッチcronで自動的に消去してくれる
-            
-        if ($posts == "") {
-            Auth::user()->alert_level = "NULL";
-            Auth::user()->update();
-        }
 
         foreach(Auth::user()->posts as $post) {
             if($post->public == 1) {
@@ -69,11 +65,10 @@ class ActionController extends Controller
                 }
             }
         }
-        $posts = User::find('user_id');
         Auth::user()->posts;
 
 
-        return view('admin.home', ['posts' => $posts]);
+        return view('admin.home', ['posts' => Auth::user()->posts]);
     }
 
     /**
@@ -90,8 +85,17 @@ class ActionController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, Post::$rules);
         $post = new Post;
+        
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => [
+                'required',
+                'date',
+                'after:' . $request->start_date
+            ],
+        ]);
+        // リクエストされた$start_dateより後であるかという
 
         $post->period = Carbon::now('Asia/Tokyo');
         // dd($post->start_date);
@@ -147,6 +151,7 @@ class ActionController extends Controller
         $this->validate($request, Reward::$rules);
         $reward = new Reward;
         $form = $request->all();
+        
         $reward->fill($form);
 
         $reward->save();
@@ -170,6 +175,7 @@ class ActionController extends Controller
     // ポイントでお買い物する時の処理
     public function rewardsget(Request $request)
     {
+
         $validate_rule = [
             'reward_point' => 'integer|max:'.Auth::user()->point,
             // titleを複数購入防ぐため
@@ -182,7 +188,7 @@ class ActionController extends Controller
         $record = new Rewardrecord;
         $record->record_title = $request->title;
         $record->user_id = Auth::id();
-        $record->reward_period = Carbon::now();
+        $record->reward_period = Carbon::now()->addHours($request->time);
         $record->save();
 
         // ユーザーのIDとリワードID購入履歴
@@ -203,11 +209,9 @@ class ActionController extends Controller
     //  マイページの処理
     public function mypage() 
     {
-        $rewards = Rewardrecord::where('user_id', Auth::id())
-        ->orderBy('created_at', 'desc')
-        ->get();
-        
-        foreach($rewards as $reward) {
+        Auth::user()->rewardrecords;
+
+        foreach(Auth::user()->rewardrecords as $reward) {
             if($reward->getRemaindingDays() == 0) {
                 $reward->delete();
                 Auth::user()->alert_level = "NULL";
@@ -216,14 +220,9 @@ class ActionController extends Controller
             }
         }
 
-        $notices = Notice::all();
+        Auth::user()->rewardrecords;
 
-
-        $rewards = Rewardrecord::where('user_id', Auth::id())
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-        return view('admin.mypage', ['rewards' => $rewards, 'notices' => $notices]);
+        return view('admin.mypage', ['rewards' => Auth::user()->rewardrecords, 'notices' => Notice::all()]);
     }
 
     // mypageの変更、追加の処理
@@ -234,19 +233,16 @@ class ActionController extends Controller
 
         $profile->purpose = $request->purpose;
         // dd$formで確認できてきているのかdd($form['image'])
-        if(isset($form['image'])) {
-            $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+        if(isset($form['img'])) {
+            $path = Storage::disk('s3')->putFile('/',$form['img'],'public');
             // ddが通ってないdd($path)
             $profile->image_profile = Storage::disk('s3')->url($path);
-        } elseif ($request->file('image')) {
-            $path = Storage::disk('s3')->putFile('/', $form['image'], 'public');
-            $profile->image_profile = Storage::disk('s3')->url($path);
-        } else {
-            $profile->image_profile = $request->image_profile;
+        }  else {
+            $form['image_profile'] = $profile->image_profile;
         }
 
         unset($form['_token']);
-        unset($form['image']);
+        unset($form['img']);
 
         $profile->fill($form)->save();
 
@@ -282,12 +278,11 @@ class ActionController extends Controller
     // 写真で証拠確認して記録する処理
     public function verifycreate(Request $request)
     {
-        // エラーが起こる原因は大体idを持って来れているのかどうかで決まる。
-            Auth::user()->point += $request->user_point;
-            Auth::user()->alert_level = "NULL";
-            Auth::user()->update();
-
-            Post::find($request->id)->delete();
+        $validate_rule = [
+            'image' => 'required',
+        ];
+        
+        $this->validate($request, $validate_rule);
 
             $verify = new VerifiedPhoto;
             $verify->photo_id = Auth::id();
@@ -308,6 +303,13 @@ class ActionController extends Controller
 
             $verify->fill($form)->save();
 
+        // エラーが起こる原因は大体idを持って来れているのかどうかで決まる。
+            Auth::user()->point += $request->user_point;
+            Auth::user()->alert_level = "NULL";
+            Auth::user()->update();
+
+            Post::find($request->id)->delete();
+
             session()->flash('msg_success', 'クエストが完了しました！');
             return redirect('admin');
     }
@@ -315,7 +317,9 @@ class ActionController extends Controller
     // 確認が完了した履歴表の処理
     public function verified()
     {
-        $verified = verifiedPhoto::where('photo_id', Auth::id())->get();
+        $verified = verifiedPhoto::where('photo_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->get();
         
         return view('admin.verified_show', ['verified_photos' => $verified]);
     }
@@ -323,6 +327,14 @@ class ActionController extends Controller
     // 溜めていた投稿を公開する処理
     public function runpublic(Request $request)
     {
+        $test_rules = [
+            'title' => 'required',
+            'user_point' => 'required',
+            'death_point' => 'required',
+        ];
+
+        $this->validate($request, $test_rules);
+
         $planning = Post::find($request->id);
 
         $planning->start_date = new Carbon($request->start_date);

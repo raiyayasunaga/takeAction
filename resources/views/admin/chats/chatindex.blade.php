@@ -9,35 +9,19 @@
 
 @section('content')
 <div class="container">
-<div id="app">
-      <notification-bell
-        :size="100"
-        :count="list.length"
-        upper-limit="50"
-        counter-location="upperRight"
-        counter-style="roundRectangle"
-        counter-background-color="#FF0000"
-        counter-text-color="#FFFFFF"
-        icon-color="#000000"
-        font-size="25px"
-        :animated="true"
-      ></notification-bell>
-      <ul class="list-group">
-      <li class="list-group-item" v-for="(item, index) in list" :key="index"><button class="btn btn-danger" type="button" @click="deleteItem(index)">削除する</button></li>
-      </ul>
-    </div>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
- 
-        </div>
-    </div>
- 
+  <!-- メッセージリスト -->
+  <div class="messaging">
+   @if(isset($room))
+     <message-list login_user_id="{{Auth::id()}}" redirect_room_id="{{$room->room_id}}"></message-list>
+   @else
+     <message-list login_user_id="{{Auth::id()}}"></message-list>
+   @endif
+ </div>
     {{--  チャット可能ユーザ一覧  --}}
     <table class="table">
         <thead>
         <tr>
             <th>Name</th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -45,7 +29,8 @@
         <tr>
             <!-- <th>{{$loop->iteration}}</th> -->
             <td>{{$user->name}}</td>
-            <td><a href="/chat/{{$user->id, $user->name}}"><button type="button" class="btn btn-primary">Chat</button></a></td>
+            <td class="message_tem"><a href="/chat/{{$user->id}}"><button type="button" class="btn btn-primary">Chat</button></a></td>
+            <td class="message_notice">メッセージが届いています</td>
         </tr>
         @endforeach
         </tbody>

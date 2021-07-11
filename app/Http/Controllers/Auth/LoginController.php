@@ -48,5 +48,6 @@ class LoginController extends Controller
     $user->last_login_at = now();
     $user->save();
     }
+    
 
 }

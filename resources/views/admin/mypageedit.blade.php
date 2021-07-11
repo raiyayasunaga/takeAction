@@ -9,7 +9,7 @@
         <h4>マイページ画像の設定</h4>
       </div>
       <div class="row my-3">
-      <input type="file" name="image" id="image_profile" onchange="previewImage(this);">
+      <input type="file" name="img" id="image_profile" onchange="previewImage(this);">
       <div class="col-md-3">
         <img  src="{{ Auth::user()->image_profile }}" style="height: 100px; border: 1px solid black;">
       </div>

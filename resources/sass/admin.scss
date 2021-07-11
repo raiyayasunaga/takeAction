@@ -1,14 +1,17 @@
 @import "variables";
 
+
+
+
+
+
+
+
 // 吹き出し送信者
 .send {
-  width: 100%;
-  margin: 1.5em 0;
-  overflow: hidden;
+  @include send;
   .faceicon {
-    float: left;
-    margin-right: -90px;
-    width: 80px;
+    @include faceicon;
     img {
       width: 100%;
       height: auto;
@@ -22,23 +25,9 @@
 }
 
 .send_message {
-  position: relative;
-  display: inline-block;
-  line-height: 90px;
-  padding: 0px 20px;
-  text-align: center;
-  color: #FFF;
-  font-weight: bold;
-  background: #ff8e9d;
-  border-radius: 35px;
-  box-sizing: border-box;
+  @include send_message;
   &::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: -45px;
-    border: 15px solid transparent;
-    border-left: 35px solid #ff8e9d;
+    @include send_message_before;
   }
   p {
     margin: 0;
@@ -48,51 +37,33 @@
 
 // 吹き出し受信者
 .recieve {
-  width: 100%;
-  margin: 1.5em 0;
-  overflow: hidden;
-}
-
-.recieve .faceicon {
-  float: left;
-  margin-right: -90px;
-  width: 80px;
-}
-
-.recieve .faceicon img{
-  width: 100%;
-  height: auto;
-  border: solid 3px #d7ebfe;
-  border-radius: 50%;
-}
-
-.recieve .chatting {
-  width: 100%;
+  @include send;
+  .faceicon {
+    @include faceicon;
+    img {
+      width: 100%;
+      height: auto;
+      border: solid 3px #d7ebfe;
+      border-radius: 5;
+    }
+  }
+  .chatting {
+    width: 100%;
+  }
 }
 
 .recieve_message {
-  display: inline-block;
-  position: relative; 
-  margin: 5px 0 0 105px;
-  padding: 17px 13px;
-  border-radius: 12px;
-  background: #d7ebfe;
+  @include send_message;
+  &::before {
+    @include send_message_before;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+  }
 }
 
-.recieve_messeage:after {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: 18px; 
-  left: -24px;
-  border: 12px solid transparent;
-  border-right: 12px solid #d7ebfe;
-}
 
-.recieve_message p {
-  margin: 0;
-  padding: 0;
-}
 
 // モーダルウィンドウ
 *{

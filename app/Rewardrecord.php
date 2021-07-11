@@ -20,7 +20,7 @@ class Rewardrecord extends Model
 
     public function getRemaindingDays()
     {
-      return Carbon::now()->subDays(1)->diffInHours($this->created_at);
+      return Carbon::now()->subDays($this->time)->diffInHours($this->created_at);
     }
 
 }

@@ -18,11 +18,13 @@ class ChatController extends Controller
     }
  
  
-    public function index(Request $request , $recieve)
+    public function index(Request $request, $recieve)
     {
+
         // チャットの画面
         $loginId = Auth::id();
- 
+
+        // レシーブに値をどの値を日本語で
         $param = [
           'send' => $loginId,
           'recieve' => $recieve,
@@ -35,13 +37,16 @@ class ChatController extends Controller
             $query->where('recieve' , $loginId);
  
         });
+        // ここでrecieveには数値が入ることを理解する事が大事
+        $user = User::find($request->recieve);
  
+        // ログイン者以外のユーザを取得する
+
         $messages = $query->get();
 
         // リレーション使って表現する
 
- 
-        return view('admin.chats.chat' , compact('param' , 'messages'));
+        return view('admin.chats.chat' , compact('param' , 'messages', 'user'));
     }
  
     /**

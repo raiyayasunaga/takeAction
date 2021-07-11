@@ -18,7 +18,8 @@
             <tr>
               <td>
                 <h4>{{ $verified_photo->photo_title }}</h4>
-                <img src="{{ $verified_photo->image_path }}" height="200px;"> 
+                <div class="display_normal"><img src="{{ $verified_photo->image_path }}" height="200px;"></div> 
+                <div id="display_show" style="display: none"><img src="{{ $verified_photo->image_path }}" height="300px;"></div>
               </td>
               <td>{{ preg_replace("/:[0-5][0-9]| \w\w/", "",$verified_photo->created_at) }}日</td>
             </tr>
@@ -31,5 +32,7 @@
 @endsection
 
 @section('js')
-
+<script type="text/javascript">
+    
+</script>
 @endsection
