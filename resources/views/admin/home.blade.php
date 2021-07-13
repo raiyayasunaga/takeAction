@@ -13,7 +13,8 @@
 @endsection
 
 @section('content')
-  <div class="container">
+{{ Breadcrumbs::render('admin') }}
+  <div class="container mt-5">
     <div class="row">
       <div class="col">
         <h3>最近の課題</h3>

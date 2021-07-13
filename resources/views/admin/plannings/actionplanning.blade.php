@@ -3,6 +3,7 @@
 @section('title', '実行していない')
 
 @section('content')
+{{ Breadcrumbs::render('admin.actionplanning') }}
   <div class="container">
     <div class="row">
       <div class="col">
@@ -25,7 +26,7 @@
                   {{ $post->title }}
                 </td>
                 <!-- route　対応ができない、直書きするのは弱い。 -->
-                <td><a href="{{ route('planning.public', ['id' => $post->id]) }}">公開する</a></td>
+                <td><a href="{{ route('admin.planning.public', $post) }}">公開する</a></td>
               </tr>
             @endif
           @endforeach

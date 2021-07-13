@@ -3,6 +3,7 @@
 @section('title', 'ユーザーの証拠履歴画面')
 
 @section('content')
+{{ Breadcrumbs::render('admin.verified.photo') }}
 <div class="container">
     <div class="row mt-5">
       <h3>これまでの投稿履歴</h3>
@@ -18,7 +19,7 @@
             <tr>
               <td>
                 <h4>{{ $verified_photo->photo_title }}</h4>
-                <div class="display_normal"><img src="{{ $verified_photo->image_path }}" height="200px;"></div> 
+                <div class="display_normal"><a href="{{ $verified_photo->image_path }}"><img src="{{ $verified_photo->image_path }}" height="200px;"></a></div> 
                 <div id="display_show" style="display: none"><img src="{{ $verified_photo->image_path }}" height="300px;"></div>
               </td>
               <td>{{ preg_replace("/:[0-5][0-9]| \w\w/", "",$verified_photo->created_at) }}日</td>

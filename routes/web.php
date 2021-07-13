@@ -23,7 +23,7 @@ Route::prefix('admin')->group(function () {
     Route::get('mypageedit', function() {
 
         return view('admin.mypageedit');
-    });
+    })->name('admin.mypageedit');
     Route::post('mypagecreate', 'ActionController@mypagecreate');
 
 
@@ -35,7 +35,6 @@ Route::prefix('admin')->group(function () {
     })->name('admin.reward');
 
     Route::get('reward_create', function() {
-
         return view('admin.rewards.reward_create');
     })->name('admin.reward_create');
     Route::post('rewardscreate', 'ActionController@rewardcreate');
@@ -78,21 +77,17 @@ Route::prefix('admin')->group(function () {
     Route::post('verifycreate', 'ActionController@verifycreate');
 
     // 投稿履歴
-    Route::get('verified_photo', 'ActionController@verified')->name('verified.photo');
-
+    Route::get('verified_photo', 'ActionController@verified')->name('admin.verified.photo');
 
 
     // 投稿保存、まだ開始していない課題など
     Route::get('actionplanning', function() {
 
         return view('admin.plannings.actionplanning');
-    });
+    })->name('admin.actionplanning');
 
-    Route::get('planningpublic', function(Request $request) {
-       $plan = Post::find($request->id);
+    Route::get('planningpublic/{post}', 'ActionController@planpublic')->name('admin.planning.public');
 
-        return view('admin.plannings.planningpublic', ['plan_form' => $plan]);
-    })->name('planning.public');
     
     Route::post('runpublic', 'ActionController@runpublic');
 

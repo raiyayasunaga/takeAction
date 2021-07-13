@@ -3,6 +3,7 @@
 @section('title', 'ご褒美一覧')
 
 @section('content')
+{{ Breadcrumbs::render('admin/reward') }}
   <div class="container">
   <h2>ご褒美一覧</h2>
     <h3>現在のポイント数：{{ Auth::user()->point }}</h3>
@@ -11,7 +12,8 @@
           <thead>
               <tr>
                   <th width="60%">褒美タイトル</th>
-                  <th width="30%">購入ポイント</th>
+                  <th width="20%">購入ポイント</th>
+                  <th width="20%">有効期限</th>
                   @if(Auth::user()->name == "頼矢")
                   <th width="10%">編集</th>
                   @endif
@@ -36,6 +38,7 @@
                   <input type="hidden" name="title" value="{{ $reward->title }}" id="">
                 </form>
                   <td>{{ $reward->reward_point }}</td>
+                  <td>あと{{ $reward->getRemainingTime() }}時間</td>
                 @if(Auth::user()->name == '頼矢')
                   <td><a href="{{ route('reward.edit', ['id' => $reward->id]) }}">編集</a></td>
                 @endif

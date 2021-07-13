@@ -3,6 +3,7 @@
 @section('title', 'ご褒美作成')
 
 @section('content')
+{{ Breadcrumbs::render('admin.reward_create') }}
   <div class="container">
     <form action="{{ action('ActionController@rewardcreate') }}" onSubmit="return recheck()" method="post" enctype="multipart/form-data">
     @if ($errors->any())

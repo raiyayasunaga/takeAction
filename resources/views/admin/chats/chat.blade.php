@@ -1,6 +1,8 @@
 @extends('layouts.main')
  
 @section('content')
+{{ Breadcrumbs::render('chat', $user) }}
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">

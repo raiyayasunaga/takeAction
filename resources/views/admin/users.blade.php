@@ -3,6 +3,7 @@
 @section('title', 'ユーザー一覧')
 
 @section('content')
+  {{ Breadcrumbs::render('admin.users') }}
   <div class="container">
     <div class="row">
       <div class="col">

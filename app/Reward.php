@@ -15,7 +15,13 @@ class Reward extends Model
         "title" => "required | string | min: 5 ",
         "reward_point" => "integer",
     );
+
+    protected $casts = [
+        'time' => 'datetime',
+    ];
     
-    
+    public function getRemainingTime(){
+        return $this->time->diffInHours($this->created_at);
+      }
     
 }

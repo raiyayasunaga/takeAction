@@ -3,6 +3,7 @@
 @section('title', 'ユーザー情報')
 
 @section('content')
+{{ Breadcrumbs::render('usershow'. $user)}}
   <div class="container">
     <h3>ユーザー詳細一覧</h3>
       <h4>{{ $users->name }}さんの投稿</h4>

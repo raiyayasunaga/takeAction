@@ -25,6 +25,7 @@ class ActionController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+
     //  ホームページ
     public function index()
     {
@@ -150,11 +151,11 @@ class ActionController extends Controller
     {
         $this->validate($request, Reward::$rules);
         $reward = new Reward;
+        $reward->time = Carbon::now()->addHours($request->time);
         $form = $request->all();
-        
-        $reward->fill($form);
-
-        $reward->save();
+        unset($form['time']);
+    
+        $reward->fill($form)->save();
 
         session()->flash('msg_success', 'ご褒美内容が作成されました');
         return redirect('admin/reward');
@@ -214,7 +215,6 @@ class ActionController extends Controller
         foreach(Auth::user()->rewardrecords as $reward) {
             if($reward->getRemaindingDays() == 0) {
                 $reward->delete();
-                Auth::user()->alert_level = "NULL";
                 Auth::user()->update();
             session()->flash('msg_success', '有効期限が過ぎました');
             }
@@ -323,6 +323,12 @@ class ActionController extends Controller
         
         return view('admin.verified_show', ['verified_photos' => $verified]);
     }
+
+    // 未公開課題フォームの処理
+    public function planpublic(Post $post)
+     {
+        return view('admin.plannings.planningpublic', compact('post'));
+     }
 
     // 溜めていた投稿を公開する処理
     public function runpublic(Request $request)

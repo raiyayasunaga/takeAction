@@ -1,8 +1,9 @@
 @extends('layouts.main')
 
-@section('title', 'mypage画面')
+@section('title', 'mypage編集画面')
 
 @section('content')
+{{ Breadcrumbs::render('admin.mypageedit') }}
   <div class="container">
     <form action="{{ action('ActionController@mypagecreate') }}" method="post" enctype="multipart/form-data">
       <div class="row my-3">

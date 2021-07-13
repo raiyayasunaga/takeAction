@@ -3,6 +3,7 @@
 @section('title', '作成画面')
 
 @section('content')
+{{ Breadcrumbs::render('admin/create') }}
   <div class="container">
   <!-- autocomplete="off"で予測入力が消せる！！ -->
   <form action="{{ route('admin.store') }}" onSubmit="return check()" method="post" enctype="multipart/form-data" autocomplete="off">

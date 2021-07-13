@@ -3,6 +3,9 @@
 @section('title', 'mypage画面')
 
 @section('content')
+<div class="Breadcrumbs">
+{{ Breadcrumbs::render('admin.mypage') }}
+</div>
     @foreach($notices as $notice)
       <div class="modal js-modal">
           <div class="modal__bg js-modal-close"></div>
@@ -15,10 +18,10 @@
       </div>
     @endforeach
   <div class="container">
-    <h3 class="mb-5"><a href="mypageedit">マイページの設定</a></h3>
-    <h3><a class="btn btn-danger" href="{{ route('verified.photo') }}">今までの記録一覧</a></h3>
+    <h3 class="mb-5"><a href="{{ route('admin.mypageedit') }}">マイページの設定</a></h3>
+    <h3><a class="btn btn-danger" href="{{ route('admin.verified.photo') }}">今までの記録一覧</a></h3>
     <button class="demo btn btn-primary">ローカルストレージ消去</button>
-    <a class="btn btn-primary" href="actionplanning">まだ実行していない課題一覧</a>
+    <a class="btn btn-primary" href="{{ route('admin.actionplanning') }}">まだ実行していない課題一覧</a>
     <div class="row mt-5">
     <h3>購入履歴</h3>
       <table class="table">
@@ -33,7 +36,7 @@
             <tr>
               <td>{{ $reward->record_title }}</td>
               <!-- createad_atの正規表現 -->
-              <td>あと{{ $reward->getRemaindingDays() }}時間</td>
+              <td>あと{{ $reward->getRemainingTime() }}時間</td>
               <!-- <td>{{ preg_replace("/[0-9]{4}|([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]/", "", $reward->created_at) }}</td> -->
             </tr>
           @endforeach

@@ -3,6 +3,8 @@
 @section('title', '公開画面')
 
 @section('content')
+
+
   <div class="container">
   <!-- autocomplete="off"で予測入力が消せる！！ -->
   <form action="{{ action('ActionController@runpublic') }}" onSubmit="return check" method="post" enctype="multipart/form-data" autocomplete="off">
@@ -16,7 +18,7 @@
     <div class="row">
         <div class="col">
           <h2>課題公開する画面</h2>
-            <input type="text" name="title" class="form-control" placeholder="例：1日7時間勉強する！" value="{{ $plan_form->title }}">
+            <input type="text" name="title" class="form-control" placeholder="例：1日7時間勉強する！" value="{{ $post->title }}">
         </div>
     </div>
     <div class="row my-3">
@@ -66,7 +68,7 @@
       </div>
       @csrf
       <input type="hidden" name="public" value="1">
-      <input type="hidden" name="id" value="{{ $plan_form->id }}">
+      <input type="hidden" name="id" value="{{ $post->id }}">
       <input class="btn btn-primary" style="margin-top: 250px;" type="submit" value="公開する">
       </form>
   </div>

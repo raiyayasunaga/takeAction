@@ -53,9 +53,7 @@
         <div id="app">
           <nav class="navbar navbar-expand-md navbar-light shadow-sm bg-white" style="background: -webkit-linear-gradient(to right, #8e0e00, #1f1c18);">
               <div class="container">
-                  <a class="navbar-brand" href="{{ url('admin') }}">
-                      <img src="{{ Auth::user()->image_profile }}" height="50px;">
-                  </a>
+                  <div><a href="{{ url('admin') }}"><img src="{{ Auth::user()->image_profile }}" height="40" alt=""></a></div>
                    <!-- Left Side Of Navbar -->
                    <ul class="navbar-nav mr-auto">
                             <li class="nav-item dropdown">
@@ -79,12 +77,13 @@
                     <ul class="navbar-nav ml-auto">
                             <nav class="navMenu">
                                 <ul>
+                                    <li><a class="btn btn-primary mr-3" href="{{ url('admin') }}">ホームページ</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.mypage') }}" >マイページ</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.create') }}">ムチを作成</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.users') }}">利用しているユーザー</a></li>
-                                    <li><a class="nav-font" href="http://127.0.0.1:8000/home">チャット可能ユーザー</a></li>
+                                    <li><a class="nav-font" href="{{ route('home') }}">チャット可能ユーザー</a></li>
                                 </ul>
                             </nav>
 
@@ -111,18 +110,19 @@
 
                       <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
+                            <li><a class="btn btn-primary mr-3" href="{{ url('admin') }}">ホームページ</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.mypage') }}" >マイページ</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.create') }}">課題を作成</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.reward') }}">ご褒美一覧</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.reward_create') }}">ご褒美作成</a></li>
                             <li><a class="btn btn-success" href="{{ route('admin.users') }}">利用しているユーザー</a></li>
-                            <li><a class="btn btn-success" href="http://127.0.0.1:8000/home">チャット可能なユーザー</a></li>
+                            <li><a class="btn btn-success" href="{{ route('home') }}">チャット可能なユーザー</a></li>
                         </ul>
                           @endguest
                   </div>
               </div>
           </nav>
-            <main class="py-4">
+            <main >
                 @yield('content')
             </main>
         </div>

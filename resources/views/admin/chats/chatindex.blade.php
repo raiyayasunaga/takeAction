@@ -8,6 +8,8 @@
 @endsection
 
 @section('content')
+{{ Breadcrumbs::render('home') }}
+
 <div class="container">
   <!-- メッセージリスト -->
   <div class="messaging">
@@ -29,8 +31,7 @@
         <tr>
             <!-- <th>{{$loop->iteration}}</th> -->
             <td>{{$user->name}}</td>
-            <td class="message_tem"><a href="/chat/{{$user->id}}"><button type="button" class="btn btn-primary">Chat</button></a></td>
-            <td class="message_notice">メッセージが届いています</td>
+            <td class="message_tem"><a href="/chat/{{$user->id}}"><button type="button" class="btn btn-primary">Chatに入る</button></a></td>
         </tr>
         @endforeach
         </tbody>
