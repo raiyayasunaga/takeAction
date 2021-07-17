@@ -42,11 +42,12 @@ class ActionController extends Controller
 
         foreach(Auth::user()->posts as $post) {
             if($post->public == 1) {
-                if($post->getendHours() == 0) {
+                if($post->getendDays() == 0 && $post->getendHours() == 0) {
                     Auth::user()->point -= $post->death_point;
                     Auth::user()->alert_level = "";
-                    Auth::user()->update();
                     $post->delete();
+
+                    Auth::user()->update();
                 session()->flash('msg_success', '「'.$post->title . '」' . 'ミッション失敗しました');
                 }
                 elseif($post->getendDays() == 0) {
@@ -252,16 +253,15 @@ class ActionController extends Controller
 
 
     // ユーザー個別の処理
-    public function usershow(Request $request)
+    public function usershow(User $user)
     {
         // ユーザー個別の情報を表示
         // User_idが渡されていないので、、
-        $users = User::find($request->id);
-        $posts = Post::where('user_id', $users->id)
+        $posts = Post::where('user_id', $user->id)
         ->orderBy('created_at', 'desc') 
             ->get();
 
-        return view('admin.usershow', ['posts' => $posts, 'users' => $users]);
+        return view('admin.usershow', ['posts' => $posts, 'user' => $user]);
     }
 
 

@@ -15,11 +15,16 @@ Breadcrumbs::for('admin/reward', function ($trail) {
   $trail->push('ご褒美一覧', url('admin/reward'));
 });
 
+// ご褒美一覧→編集
+Breadcrumbs::for('reward', function($trail, $edit) {
+  $trail->parent('admin/reward');
+  $trail->push('編集', url('reward/' . $edit->id));
+});
+
 // ご褒美作成
 Breadcrumbs::for('admin.reward_create', function($trail) {
   $trail->push('ご褒美作成', route('admin.reward_create'));
 });
-
 
 
 // mypage
@@ -46,9 +51,9 @@ Breadcrumbs::for('admin.actionplanning', function ($trail) {
 });
 
 // mypage->actionplanning->publicplanning
-Breadcrumbs::for('planningpublic', function ($trail, $posts) {
+Breadcrumbs::for('planningpublic', function ($trail, $post) {
   $trail->parent('admin.actionplanning');
-  $trail->push('ddm', url('planningpublic/' . $posts->id));
+  $trail->push( $post->title, url('planningpublic/' . $post->id));
 });
 
 
@@ -59,9 +64,9 @@ Breadcrumbs::for('admin.users', function ($trail) {
 
 
 // users->usershow
-Breadcrumbs::for('usershow', function($trail, $user) {
-  $trail->parent('admin.user');
-  $trail->push('ユーザー詳細', url('usershow?id=' . $user->id));
+Breadcrumbs::for('users', function($trail, $user) {
+  $trail->parent('admin.users');
+  $trail->push($user->name . 'さんの詳細', url('users/' . $user->id));
 });
 
 

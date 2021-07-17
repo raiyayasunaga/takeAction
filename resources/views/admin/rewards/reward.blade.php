@@ -38,9 +38,9 @@
                   <input type="hidden" name="title" value="{{ $reward->title }}" id="">
                 </form>
                   <td>{{ $reward->reward_point }}</td>
-                  <td>あと{{ $reward->getRemainingTime() }}時間</td>
+                  <td>{{ $reward->getRemainingdisplay() }}時間</td>
                 @if(Auth::user()->name == '頼矢')
-                  <td><a href="{{ route('reward.edit', ['id' => $reward->id]) }}">編集</a></td>
+                  <td><a href="{{ route('reward.edit', $reward) }}">編集</a></td>
                 @endif
               </tr>
             @endforeach

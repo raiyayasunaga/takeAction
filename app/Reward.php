@@ -20,8 +20,8 @@ class Reward extends Model
         'time' => 'datetime',
     ];
     
-    public function getRemainingTime(){
-        return $this->time->diffInHours($this->created_at);
+    public function getRemainingdisplay(){
+        return ($this->created_at)->diffInHours($this->time);
       }
     
 }

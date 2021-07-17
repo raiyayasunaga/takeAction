@@ -3,7 +3,7 @@
 @section('title', 'ご褒美編集画面')
 
 @section('content')
-<div class="container">
+<div class="container mt-5">
   <form action="{{ action('ActionController@rewardupdate') }}" method="post" enctype="multipart/form-data">
     @if (count($errors) > 0)
       <ul>

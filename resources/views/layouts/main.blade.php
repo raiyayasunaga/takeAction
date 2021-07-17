@@ -77,7 +77,7 @@
                     <ul class="navbar-nav ml-auto">
                             <nav class="navMenu">
                                 <ul>
-                                    <li><a class="btn btn-primary mr-3" href="{{ url('admin') }}">ホームページ</a></li>
+                                    <li><a class="nav-font" href="{{ url('admin') }}">ホームページ</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.mypage') }}" >マイページ</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.create') }}">ムチを作成</a></li>
                                     <li><a class="nav-font" href="{{ route('admin.reward') }}">ご褒美一覧</a></li>

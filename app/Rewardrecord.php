@@ -12,8 +12,8 @@ class Rewardrecord extends Model
       'reward_period' => 'datetime'
     ];
 
-    public function getRemainingTime(){
-      return $this->reward_period->diffInHours(Carbon::now());
+    public function getRemaindingPass(){
+      return (Carbon::now())->diffInHours($this->time);
     }
 
     protected $guarded = array('id');

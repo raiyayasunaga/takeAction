@@ -40,10 +40,8 @@ Route::prefix('admin')->group(function () {
     Route::post('rewardscreate', 'ActionController@rewardcreate');
     Route::post('rewardsget', 'ActionController@rewardsget');
 
-    Route::get('reward_edit', function(Request $request) {
-        $reward_form = Reward::find($request->id);
-
-        return view('admin.rewards.reward_edit', ['reward_form' => $reward_form]);
+    Route::get('reward/{edit}', function(Reward $edit) {
+        return view('admin.rewards.reward_edit', ['reward_form' => $edit]);
     })->name('reward.edit');
     Route::post('reward_update', 'ActionController@rewardupdate');
 
@@ -54,7 +52,7 @@ Route::prefix('admin')->group(function () {
 
         return view('admin.users', ['users' => $users]);
     })->name('admin.users');
-    Route::get('usershow', 'ActionController@usershow')->name('admin.usershow');
+    Route::get('users/{user}', 'ActionController@usershow')->name('admin.usershow');
 
 
     // ポイント上げたり下げたりするルーティング

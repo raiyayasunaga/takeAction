@@ -19,7 +19,6 @@
       <div class="col">
         <h3>最近の課題</h3>
         <h4>現在の獲得ポイント:{{ Auth::user()->point }}</h4>
-        <a class="btn btn-success" href="https://docs.google.com/forms/d/e/1FAIpQLSfP6pE9o3VznTeIp9JVpLDzzIJW9UXsQ6gYGO2Bk7DmzsmnQA/viewform">アンケートにご協力お願いします。</a>
       </div>
     </div>
     <div class="row">

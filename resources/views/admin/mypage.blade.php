@@ -36,7 +36,7 @@
             <tr>
               <td>{{ $reward->record_title }}</td>
               <!-- createad_atの正規表現 -->
-              <td>あと{{ $reward->getRemainingTime() }}時間</td>
+              <td>あと{{ $reward->getRemaindingDays() }}時間</td>
               <!-- <td>{{ preg_replace("/[0-9]{4}|([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]/", "", $reward->created_at) }}</td> -->
             </tr>
           @endforeach

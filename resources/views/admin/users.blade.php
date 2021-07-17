@@ -23,7 +23,7 @@
         <tbody>
         @foreach($users as $user)
           <tr>
-            <td><a href="{{ route('admin.usershow', ['id' => $user->id])}}">{{ $user->name }}</a></td>
+            <td><a href="{{ route('admin.usershow', $user)}}">{{ $user->name }}</a></td>
             <td>{{ $user->purpose }}</td>
             <td>{{ $user->point }}</td>
           </tr>

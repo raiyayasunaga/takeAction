@@ -3,7 +3,7 @@
 @section('title', '公開画面')
 
 @section('content')
-
+{{ Breadcrumbs::render('planningpublic', $post) }}
 
   <div class="container">
   <!-- autocomplete="off"で予測入力が消せる！！ -->
